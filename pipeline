@@ -3,72 +3,29 @@ pipeline {
     
     parameters {
         string(name: 'NAME', description: 'Please tell me your name')
-        text(name: 'OBJECTIVES', description: 'Describe your objectives for this month')
+        text(name: 'DESC', description: 'Describe about the job details')
         booleanParam(name: 'SKIP_TEST', description: 'Want to skip running Test cases?')
         choice(name: 'BRANCH', choices: ['Master', 'Dev'], description: 'Choose the branch')
         password(name: 'SONAR_SERVER_PWD', description: 'Enter SONAR password')
-        string(name: 'MONTH', description: 'Enter the current month')
-        string(name: 'STEP_COUNT', description: 'Enter the number of steps you have completed')
-        string(name: 'SPONSORS', description: 'Enter people you are sponsoring')
     }
 
     stages {
-        stage('Date Check and Reminder') {
-            steps {
-                script {
-                    def currentDate = new Date().format('dd')
-                    def reminderMessage = ""
-
-                    // Check if the date is before or after 15th
-                    if (currentDate.toInteger() <= 15) {
-                        reminderMessage = "Reminder: Today is ${new Date().format('dd MMMM yyyy')}. Time is running out to achieve your objectives for this month!"
-                    } else {
-                        reminderMessage = "Today is ${new Date().format('dd MMMM yyyy')}. The end of the month is near—make sure to complete your objectives!"
-                    }
-
-                    // Display the reminder message
-                    echo reminderMessage
-                }
-            }
-        }
-
-        stage('Network of Encouragement') {
-            steps {
-                script {
-                    // Placeholder for sending encouragement messages
-                    def sponsors = params.SPONSORS
-                    echo "Encouragement message sent to: $sponsors"
-                    // Add logic for sending network-based encouragement if needed
-                }
-            }
-        }
-
-        stage('Competition and Ranking') {
-            steps {
-                script {
-                    // Simulate ranking based on steps completed
-                    def stepCount = params.STEP_COUNT.toInteger()
-                    def rankingMessage = ""
-
-                    if (stepCount >= 10000) {
-                        rankingMessage = "You are at Level 3: High Performer!"
-                    } else if (stepCount >= 5000) {
-                        rankingMessage = "You are at Level 2: Average Performer!"
-                    } else {
-                        rankingMessage = "You are at Level 1: Beginner. Keep pushing!"
-                    }
-
-                    echo rankingMessage
-                }
-            }
-        }
-
-        stage('Printing Name and Objectives') {
+        stage('Printing name') {
             steps {
                 script {
                     def name = "${params.NAME}"
-                    def objectives = "${params.OBJECTIVES}"
-                    echo "Hello, $name! Your objectives for $params.MONTH are: $objectives"
+                    def desc = "${params.DESC}"
+                    def skip = params.SKIP_TEST
+                    def branch = "${params.BRANCH}"
+
+                    if (branch == "Master") {
+                        echo "Mr. $name"
+                    } else {
+                        echo "Mrs. $name"
+                    }
+
+                    def psw = "${params.SONAR_SERVER_PWD}"
+                    echo "Password entered (hidden)"
                 }
             }
         }
