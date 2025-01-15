@@ -3,8 +3,8 @@ pipeline {
 
     parameters {
         string(name: 'NOM', description: 'Quel est votre nom ?')
-        choice(name: 'MOIS', choices: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre','Decembre'], description: 'Choisissez le mois')
-        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Choose the day accordingly to the mois')
+        choice(name: 'MOIS', choices: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'], description: 'Choisissez le mois')
+        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Choisissez le jour en fonction du mois')
     }
 
     stages {
@@ -40,7 +40,7 @@ pipeline {
 
                         case 'Avril':
                             objectifs = [
-                                booleanParam(name: "US10", description: "As-tu cree un bocal avec au moins 20 actions bienveillantes à dire et/ou à faire ?"),
+                                booleanParam(name: "US10", description: "As-tu cree un bocal avec au moins 20 actions bienveillantes a dire et/ou a faire ?"),
                                 booleanParam(name: "US11", description: "As-tu effectue au moins 2 actions bienveillantes par semaine ?"),
                                 booleanParam(name: "US12", description: "As-tu effectue au moins 4 actions bienveillantes par semaine ?")
                             ]
@@ -50,7 +50,7 @@ pipeline {
                             objectifs = [
                                 booleanParam(name: "US13", description: "As-tu teste un nouveau loisir creatif ?"),
                                 booleanParam(name: "US14", description: "As-tu teste la culture culinaire d’un autre pays au moins deux fois ce mois-ci ?"),
-                                booleanParam(name: "US15", description: "As-tu participe à deux ateliers ou evenements que tu n'avais jamais experimentes ?")
+                                booleanParam(name: "US15", description: "As-tu participe a deux ateliers ou evenements que tu n'avais jamais experimentes ?")
                             ]
                             break
 
@@ -72,9 +72,9 @@ pipeline {
 
                         case 'Aout':
                             objectifs = [
-                                booleanParam(name: "US22", description: "As-tu trouve un endroit securise pour passer la nuit à la plage ?"),
+                                booleanParam(name: "US22", description: "As-tu trouve un endroit securise pour passer la nuit a la plage ?"),
                                 booleanParam(name: "US23", description: "As-tu prepare le materiel necessaire pour dormir confortablement sur la plage ?"),
-                                booleanParam(name: "US24", description: "As-tu passe au moins une nuit à la belle etoile sur la plage ?")
+                                booleanParam(name: "US24", description: "As-tu passe au moins une nuit a la belle etoile sur la plage ?")
                             ]
                             break
 
@@ -88,16 +88,15 @@ pipeline {
 
                         case 'Octobre':
                             objectifs = [
-                                booleanParam(name: "US28", description: "As-tu identifie et t’es-tu inscrit à une formation en ligne ou en presentiel ?"),
+                                booleanParam(name: "US28", description: "As-tu identifie et t es-tu inscrit a une formation en ligne ou en presentiel ?"),
                                 booleanParam(name: "US29", description: "As-tu suivi au moins 75 % des cours et exercices proposes ?"),
                                 booleanParam(name: "US30", description: "As-tu mis en pratique les connaissances acquises dans un projet personnel ?")
                             ]
                             break
 
-
                         case 'Novembre':
                             objectifs = [
-                                booleanParam(name: "US31", description: "As-tu choisi un instrument de musique à apprendre ?"),
+                                booleanParam(name: "US31", description: "As-tu choisi un instrument de musique a apprendre ?"),
                                 booleanParam(name: "US32", description: "As-tu suivi des tutoriels ou cours pendant 30 minutes, 3 fois par semaine ?"),
                                 booleanParam(name: "US33", description: "As-tu joue un morceau simple apres un mois de pratique ?")
                             ]
@@ -110,8 +109,6 @@ pipeline {
                                 booleanParam(name: "US36", description: "As-tu utilise la respiration consciente dans les moments de stress ?")
                             ]
                             break    
-
-
                     }
 
                     if (objectifs) {
@@ -123,8 +120,7 @@ pipeline {
             }
         }
 
-
-       stage('Rappel') {
+        stage('Rappel') {
             steps {
                 script {
                     def jour = params.DAY.toInteger()
@@ -132,13 +128,11 @@ pipeline {
                     if (jour <= 15) {
                         echo "Rappel : Aujourd'hui, c'est le ${jour}. Le temps file, il reste peu de temps pour atteindre tes objectifs ce mois-ci !"
                     } else {
-                        echo "Aujourd'hui, c'est le ${jour}. La fin du mois approche, assure-toi de compléter tes objectifs !"
+                        echo "Aujourd'hui, c'est le ${jour}. La fin du mois approche, assure-toi de completer tes objectifs !"
                     }
                 }
             }
         }
-
-
 
         stage('Verification') {
             steps {
@@ -153,7 +147,7 @@ pipeline {
                             if (params.US01?.toBoolean()) {
                                 echo "Bravo ! Tu as decrit ta journee au moins une fois cette semaine."
                             } else {
-                                echo "Pense à decrire ta journee au moins une fois cette semaine !"
+                                echo "Pense a decrire ta journee au moins une fois cette semaine !"
                             }
 
                             if (params.US02?.toBoolean()) {
@@ -165,7 +159,7 @@ pipeline {
                             if (params.US03?.toBoolean()) {
                                 echo "Felicitations ! Tu as decrit toutes tes journees pendant un mois."
                             } else {
-                                echo "Continue à ecrire chaque jour pour atteindre ton objectif mensuel."
+                                echo "Continue a ecrire chaque jour pour atteindre ton objectif mensuel."
                             }
                             break
 
@@ -173,19 +167,19 @@ pipeline {
                             if (params.US04?.toBoolean()) {
                                 echo "Bravo ! Tu as cree un moodboard sur Pinterest."
                             } else {
-                                echo "Pense à creer ton moodboard sur Pinterest."
+                                echo "Pense a creer ton moodboard sur Pinterest."
                             }
 
                             if (params.US05?.toBoolean()) {
                                 echo "Bravo ! Tu as reamenage une piece selon ton moodboard."
                             } else {
-                                echo "Pense à reamenager une piece en fonction de ton moodboard."
+                                echo "Pense a reamenager une piece en fonction de ton moodboard."
                             }
 
                             if (params.US06?.toBoolean()) {
                                 echo "Bravo ! Tu as achete et installe au moins trois elements de decoration."
                             } else {
-                                echo "Pense à acheter et installer des elements de decoration."
+                                echo "Pense a acheter et installer des elements de decoration."
                             }
                             break
 
@@ -197,9 +191,9 @@ pipeline {
                             }
 
                             if (params.US08?.toBoolean()) {
-                                echo "Bravo ! Tu as fait 30 minutes d’activite physique au moins trois fois par semaine."
+                                echo "Bravo ! Tu as fait 30 minutes d activite physique au moins trois fois par semaine."
                             } else {
-                                echo "Pense à faire de l’activite physique plus souvent."
+                                echo "Pense a faire de l activite physique plus souvent."
                             }
 
                             if (params.US09?.toBoolean()) {
@@ -211,21 +205,21 @@ pipeline {
 
                         case 'Avril':
                             if (params.US10?.toBoolean()) {
-                                echo "Bravo ! Tu as cree un bocal avec au moins 20 actions bienveillantes à dire et/ou à faire."
+                                echo "Bravo ! Tu as cree un bocal avec au moins 20 actions bienveillantes a dire et/ou a faire."
                             } else {
-                                echo "Pense à creer ton bocal d’actions bienveillantes."
+                                echo "Pense a creer ton bocal d actions bienveillantes."
                             }
 
                             if (params.US11?.toBoolean()) {
                                 echo "Bravo ! Tu as effectue au moins 2 actions bienveillantes par semaine."
                             } else {
-                                echo "Essaie de realiser plus d’actions bienveillantes chaque semaine."
+                                echo "Essaie de realiser plus d actions bienveillantes chaque semaine."
                             }
 
                             if (params.US12?.toBoolean()) {
                                 echo "Bravo ! Tu as effectue au moins 4 actions bienveillantes par semaine."
                             } else {
-                                echo "Pense à accomplir plus d’actions bienveillantes."
+                                echo "Pense a accomplir plus d actions bienveillantes."
                             }
                             break
 
@@ -237,15 +231,15 @@ pipeline {
                             }
 
                             if (params.US14?.toBoolean()) {
-                                echo "Bravo ! Tu as teste la culture culinaire d’un autre pays au moins deux fois ce mois-ci."
+                                echo "Bravo ! Tu as teste la culture culinaire d un autre pays au moins deux fois ce mois-ci."
                             } else {
-                                echo "Pense à explorer de nouvelles cultures culinaires."
+                                echo "Pense a explorer de nouvelles cultures culinaires."
                             }
 
                             if (params.US15?.toBoolean()) {
-                                echo "Bravo ! Tu as participe à deux ateliers ou evenements que tu n'avais jamais experimentes."
+                                echo "Bravo ! Tu as participe a deux ateliers ou evenements que tu n'avais jamais experimentes."
                             } else {
-                                echo "Essaie de participer à de nouveaux ateliers ou evenements."
+                                echo "Essaie de participer a de nouveaux ateliers ou evenements."
                             }
                             break
 
@@ -259,13 +253,13 @@ pipeline {
                             if (params.US17?.toBoolean()) {
                                 echo "Bravo ! Tu as vu tes parents au moins deux fois par semaine."
                             } else {
-                                echo "Pense à passer plus de temps avec tes parents."
+                                echo "Pense a passer plus de temps avec tes parents."
                             }
 
                             if (params.US18?.toBoolean()) {
                                 echo "Bravo ! Tu as organise un week-end ou une sortie en famille ou entre amis."
                             } else {
-                                echo "Essaie d’organiser une sortie avec tes proches."
+                                echo "Essaie d organiser une sortie avec tes proches."
                             }
                             break
 
@@ -273,13 +267,13 @@ pipeline {
                             if (params.US19?.toBoolean()) {
                                 echo "Bravo ! Tu as reserve une place pour un concert ou festival."
                             } else {
-                                echo "Pense à reserver ta place pour un concert ou festival."
+                                echo "Pense a reserver ta place pour un concert ou festival."
                             }
 
                             if (params.US20?.toBoolean()) {
                                 echo "Bravo ! Tu as danse librement pendant un evenement musical."
                             } else {
-                                echo "Essaie de te lâcher et danser lors d’un evenement musical."
+                                echo "Essaie de te lâcher et danser lors d un evenement musical."
                             }
 
                             if (params.US21?.toBoolean()) {
@@ -291,21 +285,21 @@ pipeline {
 
                         case 'Aout':
                             if (params.US22?.toBoolean()) {
-                                echo "Bravo ! Tu as trouve un endroit securise pour passer la nuit à la plage."
+                                echo "Bravo ! Tu as trouve un endroit securise pour passer la nuit a la plage."
                             } else {
-                                echo "Pense à trouver un endroit securise pour dormir sur la plage."
+                                echo "Pense a trouver un endroit securise pour dormir sur la plage."
                             }
 
                             if (params.US23?.toBoolean()) {
                                 echo "Bravo ! Tu as prepare le materiel necessaire pour dormir confortablement sur la plage."
                             } else {
-                                echo "Assure-toi d’avoir tout le necessaire pour une nuit confortable."
+                                echo "Assure-toi d avoir tout le necessaire pour une nuit confortable."
                             }
 
                             if (params.US24?.toBoolean()) {
-                                echo "Bravo ! Tu as passe au moins une nuit à la belle etoile sur la plage."
+                                echo "Bravo ! Tu as passe au moins une nuit a la belle etoile sur la plage."
                             } else {
-                                echo "Essaie de passer une nuit à la belle etoile sur la plage."
+                                echo "Essaie de passer une nuit a la belle etoile sur la plage."
                             }
                             break
 
@@ -313,7 +307,7 @@ pipeline {
                             if (params.US25?.toBoolean()) {
                                 echo "Bravo ! Tu as planifie un voyage dans une ville ou un pays jamais visite."
                             } else {
-                                echo "Pense à planifier ton prochain voyage."
+                                echo "Pense a planifier ton prochain voyage."
                             }
 
                             if (params.US26?.toBoolean()) {
@@ -325,15 +319,15 @@ pipeline {
                             if (params.US27?.toBoolean()) {
                                 echo "Bravo ! Tu as ecrit un resume de ton experience."
                             } else {
-                                echo "Pense à ecrire un resume de ton experience de voyage."
+                                echo "Pense a ecrire un resume de ton experience de voyage."
                             }
                             break
 
                         case 'Octobre':
                             if (params.US28?.toBoolean()) {
-                                echo "Bravo ! Tu t’es inscrit à une formation en ligne ou en presentiel."
+                                echo "Bravo ! Tu t es inscrit a une formation en ligne ou en presentiel."
                             } else {
-                                echo "Pense à t’inscrire à une formation pour developper tes competences."
+                                echo "Pense a t inscrire a une formation pour developper tes competences."
                             }
 
                             if (params.US29?.toBoolean()) {
@@ -345,15 +339,15 @@ pipeline {
                             if (params.US30?.toBoolean()) {
                                 echo "Bravo ! Tu as mis en pratique tes connaissances dans un projet personnel."
                             } else {
-                                echo "Pense à appliquer ce que tu apprends dans un projet."
+                                echo "Pense a appliquer ce que tu apprends dans un projet."
                             }
                             break
 
                         case 'Novembre':
                             if (params.US31?.toBoolean()) {
-                                echo "Bravo ! Tu as choisi un instrument de musique à apprendre."
+                                echo "Bravo ! Tu as choisi un instrument de musique a apprendre."
                             } else {
-                                echo "Pense à choisir un instrument et commence à apprendre."
+                                echo "Pense a choisir un instrument et commence a apprendre."
                             }
 
                             if (params.US32?.toBoolean()) {
@@ -365,7 +359,7 @@ pipeline {
                             if (params.US33?.toBoolean()) {
                                 echo "Bravo ! Tu as joue un morceau simple apres un mois de pratique."
                             } else {
-                                echo "Continue à pratiquer pour jouer un morceau simple."
+                                echo "Continue a pratiquer pour jouer un morceau simple."
                             }
                             break
 
@@ -392,6 +386,5 @@ pipeline {
                 }
             }
         }
-
     }
 }
