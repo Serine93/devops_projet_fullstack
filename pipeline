@@ -124,22 +124,20 @@ pipeline {
         }
 
 
-        stage('Reminder') {
+       stage('Rappel') {
             steps {
                 script {
                     def jour = params.DAY.toInteger()
-                    def currentDate = new Date()
-                    def currentMonth = currentDate.format('MMMM')
-                    def currentDay = currentDate.date
         
-                    if (currentDay <= 15) {
-                        echo "Reminder: Today is ${currentDate.format('dd MMMM')}. Time is running out to achieve your objectives for this month!"
+                    if (jour <= 15) {
+                        echo "Rappel : Aujourd'hui, c'est le ${jour}. Le temps file, il reste peu de temps pour atteindre tes objectifs ce mois-ci !"
                     } else {
-                        echo "Today is ${currentDate.format('dd MMMM')}. The end of the month is near—make sure to complete your objectives!"
+                        echo "Aujourd'hui, c'est le ${jour}. La fin du mois approche, assure-toi de compléter tes objectifs !"
                     }
                 }
             }
         }
+
 
 
         stage('Verification') {
