@@ -5,12 +5,6 @@ pipeline {
         string(name: 'USER_NAME', defaultValue: '', description: 'Nom de l'utilisateur')
         string(name: 'MOIS', defaultValue: '', description: 'Mois sélectionné')
         string(name: 'JOUR', defaultValue: '', description: 'Jour sélectionné')
-        string(name: 'US01', defaultValue: '0', description: 'US01 - Décrire ma journée une fois par semaine')
-        string(name: 'US02', defaultValue: '0', description: 'US02 - Décrire ma journée 3 fois par semaine')
-        string(name: 'US03', defaultValue: '0', description: 'US03 - Décrire toutes mes journées pendant 1 mois')
-        string(name: 'US04', defaultValue: '0', description: 'US04 - Faire un moodboard sur Pinterest')
-        string(name: 'US05', defaultValue: '0', description: 'US05 - Réaménager une pièce')
-        string(name: 'US06', defaultValue: '0', description: 'US06 - Acheter et installer 3 éléments de décoration')
     }
 
     stages {
