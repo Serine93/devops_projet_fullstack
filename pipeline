@@ -1,96 +1,64 @@
 pipeline {
     agent any
-
+    
+    parameters {
+        string(name: 'NAME', description: 'Please tell me your name')
+        choice(name: 'MONTH', choices: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'], description: 'Select Month')
+        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Select Day')
+        choice(name: 'USER_STORY', choices: [
+            'Janvier - US01 : Décrire ma journée une fois par semaine',
+            'Fevrier - US02 : Décrire ma journée 3 fois par semaine',
+            'Mars - US03 : Décrire toutes mes journées pendant 1 mois',
+            'Avril - US01 : Décrire ma journée une fois par semaine',
+            'Mai - US02 : Décrire ma journée 3 fois par semaine',
+            'Juin - US03 : Décrire toutes mes journées pendant 1 mois',
+            'Juillet - US01 : Décrire ma journée une fois par semaine',
+            'Aout - US02 : Décrire ma journée 3 fois par semaine',
+            'Septembre - US03 : Décrire toutes mes journées pendant 1 mois',
+            'Octobre - US01 : Décrire ma journée une fois par semaine',
+            'Novembre - US02 : Décrire ma journée 3 fois par semaine',
+            'Decembre - US03 : Décrire toutes mes journées pendant 1 mois'
+        ], description: 'Select the User Story for the selected month')
+    }
+    
     stages {
-        stage('Initialize Variables') {
+        stage('Printing name') {
             steps {
                 script {
-                    env.MONTH = new Date().format('MMMM', TimeZone.getTimeZone('UTC'))
-                    env.DAY = new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer
+                    def name = "${params.NAME}"
+                    def month = "${params.MONTH}"
+                    def day = "${params.DAY}"
+                    echo "Mrs. $name"
+                    echo "Selected Date: $month $day"
                 }
             }
         }
-
-        stage('MONTHLY GOALS') {
+       
+        stage('BUILD') {
             steps {
                 script {
-                    def user_stories = [
-                        "January": ["Buy a Diary if it's not already the case.", "Write about your feelings of the past years.", "Write about yourself on a daily basis."],
-                        "February": ["Change the furniture arrangement.", "Buy and dispose some or new plants.", "Buy a new and more flexible desk (sit-stand)."],
-                        "March": ["Exercise more (make a program that you will be able to respect).", "Eat better (healthy meals, local ingredients, less meat, ...).", "Have more time for yourself (health care, skin care, ...)."],
-                        "April": ["Helping an elderly to cross the street.", "Give clothes to a charity for children.", "Bring breakfast for colleagues at the office."],
-                        "May": ["Take dance lessons (whatever the dance is, learn it!).", "Sign up for Marathon (or semi-marathon).", "Take a trip with someone you never had (friend, family member, partner)."],
-                        "June": ["Visit parent's home.", "Organise a trip with your friends.", "3 restaurants with your girlfriend."],
-                        "July": ["Enjoy a Summer festival.", "Have a party with your relatives.", "Go to a concert of one of your friend's favorite artists."],
-                        "August": ["Find a hotel near the sea for a week-end.", "Rent a van in order to go to the destination.", "Buy camping equipment."],
-                        "September": ["Find a few hiking trails near your place.", "Find relatives with whom you will go.", "Choose two hikes you will go on with them."],
-                        "October": ["Learn a new language that you like.", "Read three books.", "Learn a manual activity (origami, calligraphy, lock picking)."],
-                        "November": ["Find an instrument that you like.", "Take classes and lessons to learn better.", "Record a cover for a song that you like and show it to your relatives."],
-                        "December": ["Create a daily breathing program (meditation).", "Attend a yoga class.", "Ask those you love to come take a yoga class with you."]
-                    ]
-
-                    def epics = [
-                        "January": "Write a Diary",
-                        "February": "Redecorate the House to Feel Good",
-                        "March": "Take Care of Yourself",
-                        "April": "Be Kind",
-                        "May": "Do Something You've Never Done Before",
-                        "June": "Spend Time With Yours",
-                        "July": "Go to a Concert and Dance",
-                        "August": "Sleep a Night on the Beach",
-                        "September": "Discover the World",
-                        "October": "Study",
-                        "November": "Learn to Play an Instrument",
-                        "December": "Breathe Consciously",
-                    ]
-
-                    def currentGoals = user_stories[env.MONTH]
-                    def currentEpic = epics[env.MONTH]
-                    def selectedGoal = ""
-
-                    if (env.DAY >= 1 && env.DAY <= 10) {
-                        selectedGoal = currentGoals[0]
-                    } else if (env.DAY >= 11 && env.DAY <= 20) {
-                        selectedGoal = currentGoals[1]
-                    } else {
-                        selectedGoal = currentGoals[2]
+                    echo "BUILD - Name: ${params.NAME}, Month: ${params.MONTH}, Day: ${params.DAY}"
+                    def userStory = params.USER_STORY
+                    if (userStory.contains('US01')) {
+                        echo 'Objectif : Décrire ma journée une fois par semaine.'
+                    } else if (userStory.contains('US02')) {
+                        echo 'Objectif : Décrire ma journée 3 fois par semaine.'
+                    } else if (userStory.contains('US03')) {
+                        echo 'Objectif : Décrire toutes mes journées pendant 1 mois.'
                     }
-
-                    echo "Current Month : ${env.MONTH}"
-                    echo "Current Day : ${env.DAY}"
-                    echo "Short Goal for this period : ${selectedGoal}"
-                    echo "Final Goal of the Month : ${currentEpic}"
-
-                    env.SELECTED_GOAL = selectedGoal
-                    env.MONTHLY_EPIC = currentEpic
                 }
             }
         }
-
-        stage('NOTIFICATION') {
+        
+        stage('Test') {
             steps {
-                script {
-                    echo "Today's Reminder : ${env.SELECTED_GOAL}"
-                }
+                echo 'Testing'
             }
         }
-
-        stage('MONTHLY SUMMARY') {
-            when {
-                expression {
-                    return env.DAY.toInteger() >= 25
-                }
-            }
+        
+        stage('DEPLOY') {
             steps {
-                script {
-                    echo "We're ending ${env.MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
-                }
-            }
-        }
-
-        stage('SUCCESSFUL') {
-            steps {
-                echo "Pipeline ended for the ${env.MONTH}."
+                echo 'Mise en Production'
             }
         }
     }
