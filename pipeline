@@ -1,76 +1,32 @@
 pipeline {
     agent any
 
-    environment{
-        MONT = "{new Date().format('MMMM', TimeZone.getTimeZone('UTC))}"
-        DAY = "{new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer}"
-    }
     stages {
+        stage('Initialize Variables') {
+            steps {
+                script {
+                    env.MONTH = new Date().format('MMMM', TimeZone.getTimeZone('UTC'))
+                    env.DAY = new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer
+                }
+            }
+        }
+
         stage('MONTHLY GOALS') {
             steps {
                 script {
-                    // Def goals for each month
                     def user_stories = [
-                        "January" : [
-                            "Buy a Diary if it's not already the case.",
-                            "Write about your feelings of the past years.",
-                            "Write about yourself on a daily basis."
-                        ],
-                        "February" : [
-                            "Change the furniture arrangement.",
-                            "Buy and dispose some or new plants.",
-                            "Buy a new and more flexible desk (sit-stand)."
-                        ],
-                        "March" : [
-                            "Exercise more (make a program that you will be able to respect).",
-                            "Eat better (healthy meals, local ingredients, less meat, ...).",
-                            "Have more time for yourself (health care, skin care, ...)."
-                        ],
-                        "April" : [
-                            "Helping an elderly to cross the street.",
-                            "Give clothes to a charity for children.",
-                            "Bring breakfast for colleagues at the office."
-                        ],
-                        "May": [
-                            "Take dance lessons (whatever the dance is, learn it!).",
-                            "Sign up for Marathon (or semi-marathon).",
-                            "Take a trip with someone you never had (friend, family member, partner)."
-                        ],
-                        "June": [
-                            "Visit parent's home.",
-                            "Organise a trip with your friends.",
-                            "3 restaurants with your girlfriend."
-                        ],
-                        "July": [
-                            "Enjoy a Summer festival.",
-                            "Have a party with your relatives.",
-                            "Go to a concert of one of your friend's favorite artists."
-                        ],
-                        "August": [
-                            "Find a hotel near the sea for a week-end.",
-                            "Rent a van in order to go to the destination.",
-                            "Buy camping equipment."
-                        ],
-                        "September": [
-                            "Find a few hiking trails near your place.",
-                            "Find relatives with whom you will go.",
-                            "Choose two hikes you will go on with them."
-                        ],
-                        "October": [
-                            "Learn a new language that you like.",
-                            "Read three books.",
-                            "Learn a manual activity (origami, calligraphy, lock picking)."
-                        ],
-                        "November": [
-                            "Find an instrument that you like.",
-                            "Take classes and lessons to learn better.",
-                            "Record a cover for a song that you like and show it to your relatives."
-                        ],
-                        "December": [
-                            "Create a daily breathing program (meditation).",
-                            "Attend a yoga class.",
-                            "Ask those you love to come take a yoga class with you."
-                        ]
+                        "January": ["Buy a Diary if it's not already the case.", "Write about your feelings of the past years.", "Write about yourself on a daily basis."],
+                        "February": ["Change the furniture arrangement.", "Buy and dispose some or new plants.", "Buy a new and more flexible desk (sit-stand)."],
+                        "March": ["Exercise more (make a program that you will be able to respect).", "Eat better (healthy meals, local ingredients, less meat, ...).", "Have more time for yourself (health care, skin care, ...)."],
+                        "April": ["Helping an elderly to cross the street.", "Give clothes to a charity for children.", "Bring breakfast for colleagues at the office."],
+                        "May": ["Take dance lessons (whatever the dance is, learn it!).", "Sign up for Marathon (or semi-marathon).", "Take a trip with someone you never had (friend, family member, partner)."],
+                        "June": ["Visit parent's home.", "Organise a trip with your friends.", "3 restaurants with your girlfriend."],
+                        "July": ["Enjoy a Summer festival.", "Have a party with your relatives.", "Go to a concert of one of your friend's favorite artists."],
+                        "August": ["Find a hotel near the sea for a week-end.", "Rent a van in order to go to the destination.", "Buy camping equipment."],
+                        "September": ["Find a few hiking trails near your place.", "Find relatives with whom you will go.", "Choose two hikes you will go on with them."],
+                        "October": ["Learn a new language that you like.", "Read three books.", "Learn a manual activity (origami, calligraphy, lock picking)."],
+                        "November": ["Find an instrument that you like.", "Take classes and lessons to learn better.", "Record a cover for a song that you like and show it to your relatives."],
+                        "December": ["Create a daily breathing program (meditation).", "Attend a yoga class.", "Ask those you love to come take a yoga class with you."]
                     ]
 
                     def epics = [
@@ -88,26 +44,23 @@ pipeline {
                         "December": "Breathe Consciously",
                     ]
 
-                    def currentGoals = user_stories[MONTH]
-                    def currentEpic = epics[MONTH]
+                    def currentGoals = user_stories[env.MONTH]
+                    def currentEpic = epics[env.MONTH]
                     def selectedGoal = ""
 
-                    // Objectives based on the date 
-                    if (DAY >= 1 && DAY <=10){
+                    if (env.DAY >= 1 && env.DAY <= 10) {
                         selectedGoal = currentGoals[0]
-                    } else if (DAY >=11 && DAY <= 20){
+                    } else if (env.DAY >= 11 && env.DAY <= 20) {
                         selectedGoal = currentGoals[1]
-                    } else if (DAY >= 21){
+                    } else {
                         selectedGoal = currentGoals[2]
                     }
 
-                    // Details 
-                    echo "Current Month : ${MONTH}"
-                    echo "Current Day : ${DAY}"
+                    echo "Current Month : ${env.MONTH}"
+                    echo "Current Day : ${env.DAY}"
                     echo "Short Goal for this period : ${selectedGoal}"
                     echo "Final Goal of the Month : ${currentEpic}"
 
-                    // Sve the goal for next steps
                     env.SELECTED_GOAL = selectedGoal
                     env.MONTHLY_EPIC = currentEpic
                 }
@@ -117,7 +70,7 @@ pipeline {
         stage('NOTIFICATION') {
             steps {
                 script {
-                    echo "Todays Reminder : ${env.SELECTED_GOAL}"
+                    echo "Today's Reminder : ${env.SELECTED_GOAL}"
                 }
             }
         }
@@ -125,21 +78,20 @@ pipeline {
         stage('MONTHLY SUMMARY') {
             when {
                 expression {
-                    // Only if on the last week of the month
-                    DAY >=25
+                    return env.DAY.toInteger() >= 25
                 }
             }
             steps {
                 script {
-                    echo "We're ending ${MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
+                    echo "We're ending ${env.MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
                 }
             }
-        } 
+        }
 
-        stage ('SUCCESSFUL'){
+        stage('SUCCESSFUL') {
             steps {
-                echo "Pipeline ended for the ${MONTH}."
+                echo "Pipeline ended for the ${env.MONTH}."
             }
-        }       
-    }   
+        }
+    }
 }
