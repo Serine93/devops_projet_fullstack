@@ -5,20 +5,6 @@ pipeline {
         string(name: 'NAME', description: 'Please tell me your name')
         choice(name: 'MONTH', choices: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'], description: 'Select Month')
         choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Select Day')
-        choice(name: 'USER_STORY', choices: [
-            'Janvier - US01 : Décrire ma journée une fois par semaine',
-            'Fevrier - US02 : Décrire ma journée 3 fois par semaine',
-            'Mars - US03 : Décrire toutes mes journées pendant 1 mois',
-            'Avril - US01 : Décrire ma journée une fois par semaine',
-            'Mai - US02 : Décrire ma journée 3 fois par semaine',
-            'Juin - US03 : Décrire toutes mes journées pendant 1 mois',
-            'Juillet - US01 : Décrire ma journée une fois par semaine',
-            'Aout - US02 : Décrire ma journée 3 fois par semaine',
-            'Septembre - US03 : Décrire toutes mes journées pendant 1 mois',
-            'Octobre - US01 : Décrire ma journée une fois par semaine',
-            'Novembre - US02 : Décrire ma journée 3 fois par semaine',
-            'Decembre - US03 : Décrire toutes mes journées pendant 1 mois'
-        ], description: 'Select the User Story for the selected month')
     }
     
     stages {
@@ -34,18 +20,26 @@ pipeline {
             }
         }
        
+        stage('Select User Story') {
+            steps {
+                script {
+                    def userStories = input(
+                        id: 'UserStorySelection', message: "Sélectionnez vos User Stories pour ${params.MONTH}", parameters: [
+                            [$class: 'CheckboxParameterDefinition',
+                             name: 'SELECTED_US',
+                             choices: "US01 - Décrire ma journée une fois par semaine\nUS02 - Décrire ma journée 3 fois par semaine\nUS03 - Décrire toutes mes journées pendant 1 mois",
+                             description: 'Choisissez une ou plusieurs User Stories']
+                        ]
+                    )
+                    echo "User Stories sélectionnées : ${userStories}"
+                }
+            }
+        }
+
         stage('BUILD') {
             steps {
                 script {
                     echo "BUILD - Name: ${params.NAME}, Month: ${params.MONTH}, Day: ${params.DAY}"
-                    def userStory = params.USER_STORY
-                    if (userStory.contains('US01')) {
-                        echo 'Objectif : Décrire ma journée une fois par semaine.'
-                    } else if (userStory.contains('US02')) {
-                        echo 'Objectif : Décrire ma journée 3 fois par semaine.'
-                    } else if (userStory.contains('US03')) {
-                        echo 'Objectif : Décrire toutes mes journées pendant 1 mois.'
-                    }
                 }
             }
         }
