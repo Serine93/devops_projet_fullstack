@@ -1,19 +1,21 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'USER_NAME', description: 'Entrez votre nom')
+        choice(name: 'MONTH', choices: ['Janvier', 'Février'], description: 'Choisissez le mois')
+        choice(name: 'DAY', choices: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'], description: 'Choisissez le jour')
+    }
+
     stages {
         stage('Afficher les Informations Utilisateur') {
             steps {
                 script {
-                    def USER_NAME = input message: 'Entrez votre nom', parameters: [string(name: 'Nom')]
-                    def MONTH = input message: 'Choisissez le mois', parameters: [choice(name: 'Mois', choices: ['Janvier', 'Février'])]
-                    def DAY = input message: 'Choisissez le jour', parameters: [choice(name: 'Jour', choices: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])]
-                    
-                    echo "Bonjour ${USER_NAME}, bienvenue dans votre gestionnaire d'objectifs du mois de ${MONTH}."
-                    if (DAY.toInteger() <= 15) {
-                        echo "Rappel : Aujourd'hui, c'est le ${DAY}. Le temps passe vite pour atteindre vos objectifs ce mois-ci !"
+                    echo "Bonjour ${params.USER_NAME}, bienvenue dans votre gestionnaire d'objectifs du mois de ${params.MONTH}."
+                    if (params.DAY.toInteger() <= 15) {
+                        echo "Rappel : Aujourd'hui, c'est le ${params.DAY}. Le temps passe vite pour atteindre vos objectifs ce mois-ci !"
                     } else {
-                        echo "Aujourd'hui, c'est le ${DAY}. La fin du mois approche—assurez-vous de compléter vos objectifs !"
+                        echo "Aujourd'hui, c'est le ${params.DAY}. La fin du mois approche—assurez-vous de compléter vos objectifs !"
                     }
                 }
             }
@@ -35,8 +37,7 @@ pipeline {
                         ]
                     ]
 
-                    def MONTH = input message: 'Choisissez le mois', parameters: [choice(name: 'Mois', choices: ['Janvier', 'Février'])]
-                    def selected_objectives = input message: 'Cochez les objectifs réalisés :', parameters: [choice(name: 'Objectifs', choices: objectives[MONTH].values().join('\n'), description: 'Sélectionnez vos objectifs', multipleSelect: true)]
+                    def selected_objectives = input message: 'Cochez les objectifs réalisés :', parameters: [choice(name: 'Objectifs', choices: objectives[params.MONTH].values().join('\n'), description: 'Sélectionnez vos objectifs', multipleSelect: true)]
                     echo "Objectifs sélectionnés : ${selected_objectives}"
                 }
             }
@@ -69,6 +70,24 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+
+        stage('Développement') {
+            steps {
+                echo 'Phase de développement en cours...'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Phase de test en cours...'
+            }
+        }
+
+        stage('Déploiement') {
+            steps {
+                echo 'Mise en production en cours...'
             }
         }
     }
