@@ -2,114 +2,121 @@ pipeline {
     agent any 
 
     parameters {
-        string(name: 'NAME', description: 'Please tell me your name?')
-        choice(name: 'MONTH', choices: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], description: 'Choose the month')
-        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Choose the day accordingly to the month')
+        string(name: 'NAME', description: 'Quel est votre nom ?')
+        choice(name: 'MOIS', choices: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'], description: 'Choisissez le mois')
+        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Choose the day accordingly to the mois')
     }
     
     stages {
 
-        stage('Set Goals for the month') {
+        stage('MOIS OBJECTIFS') {
             steps {
                 script {
 
                     def booleanGoals = []
 
-                    switch(params.MONTH) {
-
-                        case 'January':
-                            booleanGoals = [ 
-                                booleanParam(name: "BUY_DIARY", description: "Have you bought your diary?"),
-                                booleanParam(name: "QUOTE", description: "Have you written a quote that matches your mood?")
+                    switch(params.MOIS) {
+                        case 'Janvier':
+                            booleanGoals = [
+                                booleanParam(name: "US01", description: "As-tu décrit ta journée au moins une fois cette semaine ?"),
+                                booleanParam(name: "US02", description: "As-tu décrit ta journée trois fois cette semaine ?"),
+                                booleanParam(name: "US03", description: "As-tu décrit toutes tes journées pendant un mois ?")
                             ]
                             break
 
-                        case 'February':
-                            booleanGoals = [ 
-                                booleanParam(name: "DECORATION_THEME", description: "Have you chosen your theme?"),
-                                booleanParam(name: "DECORATION_PURCHASE", description: "Have you bought the decoration?"),
-                                booleanParam(name: "DECORATION_HOUSE", description: "Have you redecorate your house?")
+                        case 'Février':
+                            booleanGoals = [
+                                booleanParam(name: "US04", description: "As-tu créé un moodboard sur Pinterest avec tes idées de décoration ?"),
+                                booleanParam(name: "US05", description: "As-tu réaménagé une pièce selon ton moodboard ?"),
+                                booleanParam(name: "US06", description: "As-tu acheté et installé au moins trois éléments de décoration ?")
                             ]
                             break
 
-                        case 'March':
-                            booleanGoals = [ 
-                                booleanParam(name: "TWENTY_KM", description: "Have you run your 20 km?"),
-                                booleanParam(name: "GYM", description: "Have you signed up for the gym?"),
-                                booleanParam(name: "YOGA", description: "Have you signed up for yoga classes?")
+                        case 'Mars':
+                            booleanGoals = [
+                                booleanParam(name: "US07", description: "As-tu dormi au moins 8 heures chaque nuit ?"),
+                                booleanParam(name: "US08", description: "As-tu fait 30 minutes d'activité physique trois fois cette semaine ?"),
+                                booleanParam(name: "US09", description: "As-tu pratiqué 10 minutes de méditation chaque jour ?")
                             ]
                             break
 
-                        case 'April':
-                            booleanGoals = [ 
-                                booleanParam(name: "VOLUNTEER", description: "Have you volunteered this month?"),
-                                booleanParam(name: "POST_IT", description: "Have you put kind post-it on the desk of your colleagues to brighten their day?"),
-                                booleanParam(name: "BOUQUET", description: "Have you made a bouquet of wild flowers for your parents?")
+                        case 'Avril':
+                            booleanGoals = [
+                                booleanParam(name: "US10", description: "As-tu créé un bocal avec 20 actions bienveillantes ?"),
+                                booleanParam(name: "US11", description: "As-tu réalisé au moins deux actions bienveillantes cette semaine ?"),
+                                booleanParam(name: "US12", description: "As-tu réalisé au moins quatre actions bienveillantes cette semaine ?")
                             ]
                             break
 
-                        case 'May':
-                            booleanGoals = [ 
-                                booleanParam(name: "SUSHI", description: "Have you taken a sushi lesson with a sushi chef?"),
-                                booleanParam(name: "WEEKEND", description: "Have you been on a road trip weekend?")
+                        case 'Mai':
+                            booleanGoals = [
+                                booleanParam(name: "US13", description: "As-tu testé un nouveau loisir créatif ?"),
+                                booleanParam(name: "US14", description: "As-tu découvert une culture culinaire étrangère au moins deux fois ce mois-ci ?"),
+                                booleanParam(name: "US15", description: "As-tu participé à deux ateliers ou événements nouveaux pour toi ?")
                             ]
                             break
 
-                        case 'June':
-                            booleanGoals = [ 
-                                booleanParam(name: "RESTAURANT", description: "Have you invited your parents to the restaurant?"),
-                                booleanParam(name: "GAMES", description: "Have you spent a whole night playing games with your friends?"),
-                                booleanParam(name: "BAKING", description: "Have you spent an afternoon baking with your Grandma?")
+                        case 'Juin':
+                            booleanGoals = [
+                                booleanParam(name: "US16", description: "As-tu prévu un cinéma entre amis au moins une fois par semaine ?"),
+                                booleanParam(name: "US17", description: "As-tu vu tes parents au moins deux fois par semaine ?"),
+                                booleanParam(name: "US18", description: "As-tu organisé une sortie ou un week-end avec ta famille ou tes amis ?")
                             ]
                             break
 
-                        case 'July':
-                            booleanGoals = [ 
-                                booleanParam(name: "VIEILLES_CHARRUES", description: "Have you been to Les Vieilles Charrues festival?"),
-                                booleanParam(name: "ORCHESTRA_CONCERT", description: "Have you been to the concert by your old orchestra?")
+                        case 'Juillet':
+                            booleanGoals = [
+                                booleanParam(name: "US19", description: "As-tu réservé une place pour un concert ou un festival ?"),
+                                booleanParam(name: "US20", description: "As-tu dansé librement pendant un événement musical ?"),
+                                booleanParam(name: "US21", description: "As-tu découvert au moins deux nouveaux artistes ou groupes en live ?")
                             ]
                             break
 
-                        case 'August':
-                            booleanGoals = [ 
-                                booleanParam(name: "CHECKLIST", description: "Have you written your checklist?"),
-                                booleanParam(name: "FIRE", description: "Have you learnt how to do a fire?")
+                        case 'Aout':
+                            booleanGoals = [
+                                booleanParam(name: "US22", description: "As-tu trouvé un endroit sécurisé pour dormir sur la plage ?"),
+                                booleanParam(name: "US23", description: "As-tu préparé tout le matériel nécessaire pour dormir confortablement sur la plage ?"),
+                                booleanParam(name: "US24", description: "As-tu passé au moins une nuit à la belle étoile sur la plage ?")
                             ]
                             break
 
-                        case 'September':
-                            booleanGoals = [ 
-                                booleanParam(name: "DOLOMITES", description: "Have you hiked in the Swiss Dolomites?"),
-                                booleanParam(name: "PICO_RUIVO", description: "Have you climbed Pico Ruivo in Madeira?")
+                        case 'Septembre':
+                            booleanGoals = [
+                                booleanParam(name: "US25", description: "As-tu planifié un voyage dans un endroit que tu n'as jamais visité ?"),
+                                booleanParam(name: "US26", description: "As-tu goûté une spécialité locale pendant ce voyage ?"),
+                                booleanParam(name: "US27", description: "As-tu écrit un résumé de ton expérience de voyage ?")
                             ]
                             break
 
-                        case 'October':
-                            booleanGoals = [ 
-                                booleanParam(name: "KUBERNETES", description: "Have you mastered Kubernetes?"),
-                                booleanParam(name: "INVESTMENTS", description: "Have you learnt how to invest money on the stock market?")
+                        case 'Octobre':
+                            booleanGoals = [
+                                booleanParam(name: "US28", description: "As-tu identifié et suivi une formation (en ligne ou en présentiel) ?"),
+                                booleanParam(name: "US29", description: "As-tu complété au moins 75% des cours et exercices ?"),
+                                booleanParam(name: "US30", description: "As-tu appliqué ce que tu as appris dans un projet personnel ?")
                             ]
                             break
 
-                        case 'November':
-                            booleanGoals = [ 
-                                booleanParam(name: "UKULELE", description: "Have you bought a ukulele?"),
-                                booleanParam(name: "CHORDS", description: "Have you mastered the 4 chords G M, D M, E m, and C M?")
+                        case 'Novembre':
+                            booleanGoals = [
+                                booleanParam(name: "US31", description: "As-tu choisi un instrument de musique à apprendre ?"),
+                                booleanParam(name: "US32", description: "As-tu suivi des tutoriels 30 minutes, trois fois par semaine ?"),
+                                booleanParam(name: "US33", description: "Sais-tu jouer un morceau simple après un mois de pratique ?")
                             ]
                             break
 
-                        case 'December':
-                            booleanGoals = [ 
-                                booleanParam(name: "ZEN", description: "Have you prepared a 'zen' place at home?"),
-                                booleanParam(name: "PLAYLIST", description: "Have you chosen a playlist to accompany these moments of relaxation?")
+                        case 'Décembre':
+                            booleanGoals = [
+                                booleanParam(name: "US34", description: "As-tu pratiqué 5 minutes de respiration consciente chaque matin ?"),
+                                booleanParam(name: "US35", description: "As-tu testé différentes techniques de respiration ?"),
+                                booleanParam(name: "US36", description: "As-tu utilisé la respiration consciente dans les moments de stress ?")
                             ]
                             break
-
                     }
+
     
                     if (booleanGoals) {
-                        currentBuild.description = "Reconfiguring parameters for ${params.MONTH}"
-                        def updatedParams = input message: "Fill out the goals for ${params.MONTH}", parameters: booleanGoals
+                        currentBuild.description = "Reconfiguring parameters for ${params.MOIS}"
+                        def updatedParams = input message: "Fill out the goals for ${params.MOIS}", parameters: booleanGoals
                         params = params + updatedParams
                     }
                 }
@@ -126,22 +133,22 @@ pipeline {
                                  day % 10 == 2 && day != 12 ? "nd" :
                                  day % 10 == 3 && day != 13 ? "rd" : "th"
 
-                    echo "Checking goals for ${params.MONTH}, ${day}${suffix}..."
+                    echo "Checking goals for ${params.MOIS}, ${day}${suffix}..."
 
-                    switch (params.MONTH) {
+                    switch (params.MOIS) {
 
                         // 2nd parameter dependent on 1st
-                        case 'January':
+                        case 'Janvier':
 
                             if (params.BUY_DIARY?.toBoolean()) {
                                 echo "Congratulations! You bought your diary and you're off to a great start!"
                             } else {
                                 if (day < 5) {
-                                    echo "Don't forget to buy a diary! Starting early will help you achieve your January goal."
+                                    echo "Don't forget to buy a diary! Starting early will help you achieve your Janvier goal."
                                 } else if (day == 5) {
                                     echo "It's not too late! Grab a diary today and start your journaling journey."
                                 } else {
-                                    echo "A bit behind, aren't we? To achieve your January goal, you need a diary. Time to get one and get started!"
+                                    echo "A bit behind, aren't we? To achieve your Janvier goal, you need a diary. Time to get one and get started!"
                                 }
                             }
 
@@ -159,7 +166,7 @@ pipeline {
 
                         // 2nd parameter dependent on 1st
                         // 3rd parameter dependent on 1st and 2nd
-                        case 'February':
+                        case 'Fevrier':
 
                             if (params.DECORATION_THEME?.toBoolean()) {
                                 echo "Congratulations on choosing your decoration theme! You're on the right track!"
@@ -182,7 +189,7 @@ pipeline {
                                     } else if (day == 15) {
                                         echo "It's not too late! Buy your decorations today and you're still on track."
                                     } else {
-                                        echo "You haven't bought your decorations yet? Time to hurry—February is slipping away!"
+                                        echo "You haven't bought your decorations yet? Time to hurry—Fevrier is slipping away!"
                                     }
                                 }
                             } else {
@@ -194,7 +201,7 @@ pipeline {
                                     } else if (day == 15) {
                                         echo "It's not too late! Choose your theme and buy your decorations today and you're still on track."
                                     } else {
-                                        echo "You haven't decided your theme nor bought your decorations yet? Time to hurry—February is slipping away!"
+                                        echo "You haven't decided your theme nor bought your decorations yet? Time to hurry—Fevrier is slipping away!"
                                     }
                                 }
                             }
@@ -209,7 +216,7 @@ pipeline {
                                         } else if (day == 25) {
                                             echo "It's not too late! Start redecorating today!"
                                         } else {
-                                            echo "February is almost over, and your home isn't redecorated yet? Time to get moving—there's still time to make a difference!"
+                                            echo "Fevrier is almost over, and your home isn't redecorated yet? Time to get moving—there's still time to make a difference!"
                                         }
                                     }
                                 } else {
@@ -221,7 +228,7 @@ pipeline {
                                         } else if (day == 25) {
                                             echo "It's not too late! Buy the decoration and start redecorating today!"
                                         } else {
-                                            echo "February is almost over, and your home isn't redecorated yet? you haven't bought decoration neither? Time to get moving—there's still time to make a difference!"
+                                            echo "Fevrier is almost over, and your home isn't redecorated yet? you haven't bought decoration neither? Time to get moving—there's still time to make a difference!"
                                         }
                                     }
                                 }
@@ -235,7 +242,7 @@ pipeline {
                                         } else if (day == 25) {
                                             echo "It's not too late! Start redecorating today!"
                                         } else {
-                                            echo "February is almost over, and your home isn't redecorated yet? Time to get moving—there's still time to make a difference!"
+                                            echo "Fevrier is almost over, and your home isn't redecorated yet? Time to get moving—there's still time to make a difference!"
                                         }
                                     }
                                 } else {
@@ -247,7 +254,7 @@ pipeline {
                                         } else if (day == 25) {
                                             echo "It's not too late! Choose a theme, buy the decoration, and start redecorating today!"
                                         } else {
-                                            echo "February is almost over, and your home isn't redecorated yet? you haven't bought decoration neither? you haven't chosen your theme?? Time to get moving—there's still time to make a difference!"
+                                            echo "Fevrier is almost over, and your home isn't redecorated yet? you haven't bought decoration neither? you haven't chosen your theme?? Time to get moving—there's still time to make a difference!"
                                         }
                                     }
                                 }
@@ -255,8 +262,8 @@ pipeline {
 
                             break
 
-                        // 2nd parameter progression format throughout the month
-                        case 'March':
+                        // 2nd parameter progression format throughout the mois
+                        case 'Mars':
 
                             def progressBar = { progress ->
                                 def filled = "=" * (progress / 10 as int)
@@ -267,7 +274,7 @@ pipeline {
                             if (params.TWENTY_KM?.toBoolean()) {
                                 def progress = 100 
                                 echo "20 km: ${progressBar(progress as int)}"
-                                echo "Congratulations on running 20 km this month! Your dedication to fitness is inspiring!"
+                                echo "Congratulations on running 20 km this mois! Your dedication to fitness is inspiring!"
                             } else {
                                 def completedDistance = input(
                                     message: "Enter the distance you've run so far (in km):",
@@ -279,7 +286,7 @@ pipeline {
                                 def progress = (completedDistance / totalDistance) * 100
                                 echo "20 km: ${progressBar(progress as int)}"
                                 if (0 != progress){
-                                    echo "You're on your way to completing the 20 km goal! Keep running—March isn't over yet!"
+                                    echo "You're on your way to completing the 20 km goal! Keep running—Mars isn't over yet!"
                                 } else {
                                     echo "It's not too late to start! Motivation is the key."
                                 }
@@ -289,11 +296,11 @@ pipeline {
                                 echo "Congratulations on signing up for the gym! You're taking charge of your fitness goals!"
                             } else {
                                 if (day < 5) {
-                                    echo "Don't forget to sign up for the gym! Getting started early will make all the difference for your March fitness goal."
+                                    echo "Don't forget to sign up for the gym! Getting started early will make all the difference for your Mars fitness goal."
                                 } else if (day == 5) {
                                     echo "It's not too late! Sign up for the gym today and start working on your goals!"
                                 } else {
-                                    echo "Still haven't signed up for the gym? March is moving fast—get to it and crush those fitness goals!"
+                                    echo "Still haven't signed up for the gym? Mars is moving fast—get to it and crush those fitness goals!"
                                 }
                             }
                         
@@ -305,18 +312,18 @@ pipeline {
                                 } else if (day == 5) {
                                     echo "It's not too late! Sign up for yoga classes today and start your wellness journey."
                                 } else {
-                                    echo "March is flying by—don't miss your chance to sign up for yoga classes and achieve your fitness goals!"
+                                    echo "Mars is flying by—don't miss your chance to sign up for yoga classes and achieve your fitness goals!"
                                 }
                             }
 
                             break
 
-                        case 'April':
+                        case 'Avril':
 
                             if (params.VOLUNTEER?.toBoolean()) {
-                                echo "Amazing! You've volunteered this month. Thank you for making a difference!"
+                                echo "Amazing! You've volunteered this mois. Thank you for making a difference!"
                             } else {
-                                echo "Remember to volunteer this month! Helping others is a great way to spread kindness and make an impact."
+                                echo "Remember to volunteer this mois! Helping others is a great way to spread kindness and make an impact."
                             }
                         
                             if (params.POST_IT?.toBoolean()) {
@@ -327,7 +334,7 @@ pipeline {
                                 } else if (day == 22) {
                                     echo "It's not too late! Leave a kind post-it today to brighten someone’s day before your holidays."
                                 } else {
-                                    echo "April is almost over, but there's still time to spread kindness in another way!"
+                                    echo "Avril is almost over, but there's still time to spread kindness in another way!"
                                 }
                             }
                         
@@ -339,23 +346,23 @@ pipeline {
                                 } else if (day == 20) {
                                     echo "It’s not too late! Make a bouquet today and surprise your parents with a beautiful gesture before their flight to Japan tomorrow."
                                 } else {
-                                    echo "The month is nearly over and your parents went on vacation—don’t miss the chance to make a bouquet of wildflowers for your Grandma instead!"
+                                    echo "The mois is nearly over and your parents went on vacation—don’t miss the chance to make a bouquet of wildflowers for your Grandma instead!"
                                 }
                             }
 
                             break
 
-                        case 'May':
+                        case 'Mai':
 
                             if (params.SUSHI?.toBoolean()) {
                                 echo "Fantastic! You’ve taken a sushi lesson with a sushi chef. Your culinary skills are leveling up!"
                             } else {
                                 if (day < 25) {
-                                    echo "Don’t forget to take a sushi lesson with a sushi chef before he returns to Japan! It’s a fun way to learn something new this May."
+                                    echo "Don’t forget to take a sushi lesson with a sushi chef before he returns to Japan! It’s a fun way to learn something new this Mai."
                                 } else if (day == 25) {
-                                    echo "It’s not too late! Sign up for a sushi lesson with a sushi chef today (before he returns to Japan) and make your May memorable."
+                                    echo "It’s not too late! Sign up for a sushi lesson with a sushi chef today (before he returns to Japan) and make your Mai memorable."
                                 } else {
-                                    echo "May is flying by and the sushi chef returned to Japan—don’t miss the chance to take another cooking lesson!"
+                                    echo "Mai is flying by and the sushi chef returned to Japan—don’t miss the chance to take another cooking lesson!"
                                 }
                             }
                         
@@ -363,25 +370,25 @@ pipeline {
                                 echo "Awesome! You’ve been on a road trip weekend. What a great way to unwind and explore!"
                             } else {
                                 if (day < 30) {
-                                    echo "Don’t forget to plan a road trip weekend this May! The open road is calling."
+                                    echo "Don’t forget to plan a road trip weekend this Mai! The open road is calling."
                                 } else {
-                                    echo "It’s not too late! Take a road trip this weekend and enjoy the last days of May!"
+                                    echo "It’s not too late! Take a road trip this weekend and enjoy the last days of Mai!"
                                 }
                             }
 
                             break
 
-                        case 'June':
+                        case 'Juin':
 
                             if (params.RESTAURANT?.toBoolean()) {
-                                echo "Wonderful! You’ve invited your parents to the restaurant this June. They must have enjoyed the treat!"
+                                echo "Wonderful! You’ve invited your parents to the restaurant this Juin. They must have enjoyed the treat!"
                             } else {
                                 if (day < 23) {
-                                    echo "Don’t forget to invite your parents to the restaurant this June before their trip to Brazil! They’ll love spending time with you."
+                                    echo "Don’t forget to invite your parents to the restaurant this Juin before their trip to Brazil! They’ll love spending time with you."
                                 } else if (day == 23) {
                                     echo "It’s not too late! Take your parents to the restaurant today and make their last day before their trip to Brazil special."
                                 } else {
-                                    echo "June is almost over, your parents are enjoying Brazil, and you haven’t invited them to the restaurant? Make time for them another time!"
+                                    echo "Juin is almost over, your parents are enjoying Brazil, and you haven’t invited them to the restaurant? Make time for them another time!"
                                 }
                             }
                         
@@ -393,7 +400,7 @@ pipeline {
                                 } else if (day == 28) {
                                     echo "Last chance! Plan your games night today and enjoy an evening full of fun and laughter!"
                                 } else {
-                                    echo "It’s no longer possible to have a games night this June. Make sure to plan one soon in the future!"
+                                    echo "It’s no longer possible to have a games night this Juin. Make sure to plan one soon in the future!"
                                 }
                             }
                         
@@ -405,14 +412,14 @@ pipeline {
                                 } else if (day == 28 || day == 29) {
                                     echo "Last chance! Bake with your Grandma today and create some wonderful memories together."
                                 } else {
-                                    echo "It’s no longer possible to bake with Grandma this June. Don’t miss the chance to spend time with her next time!"
+                                    echo "It’s no longer possible to bake with Grandma this Juin. Don’t miss the chance to spend time with her next time!"
                                 }
                             }
 
                             break
 
                         // validity period for both parameters
-                        case 'July':
+                        case 'Juillet':
 
                             if (params.VIEILLES_CHARRUES?.toBoolean()) {
                                 if (day < 17) {
@@ -428,7 +435,7 @@ pipeline {
                                 } else if (day == 17) {
                                     echo "It's today—last chance to go to Les Vieilles Charrues!"
                                 } else {
-                                    echo "It's no longer possible to attend Les Vieilles Charrues this year. Maybe next year!"
+                                    echo "It's no longer possible to attend Les Vieilles Charrues this year. Maibe next year!"
                                 }
                             }
                         
@@ -446,13 +453,13 @@ pipeline {
                                 } else if (day == 6) {
                                     echo "It's today—last chance to attend your orchestra concert!"
                                 } else {
-                                    echo "It's no longer possible to attend the orchestra concert this year. Maybe next time!"
+                                    echo "It's no longer possible to attend the orchestra concert this year. Maibe next time!"
                                 }
                             }
 
                             break
 
-                        case 'August':
+                        case 'Aout':
 
                             if (params.CHECKLIST?.toBoolean()) {
                                 if (day <= 14) {
@@ -491,7 +498,7 @@ pipeline {
                             break
 
                         // validity period for both parameters
-                        case 'September':
+                        case 'Septembre':
 
                             if (params.DOLOMITES?.toBoolean()) {
                                 if (day < 10) {
@@ -507,7 +514,7 @@ pipeline {
                                 } else if (day >= 10 && day <= 15) {
                                     echo "It's the perfect time to hike in the Swiss Dolomites—don't miss this opportunity!"
                                 } else {
-                                    echo "It's no longer possible to hike in the Swiss Dolomites-your vacation are over. Maybe next time!"
+                                    echo "It's no longer possible to hike in the Swiss Dolomites-your vacation are over. Maibe next time!"
                                 }
                             }
                         
@@ -525,14 +532,14 @@ pipeline {
                                 } else if (day >= 19 && day <= 26) {
                                     echo "It's the perfect time to climb Pico Ruivo—make sure you don't miss out!"
                                 } else {
-                                    echo "It's no longer possible to climb Pico Ruivo-your vacation are over. Maybe next time!"
+                                    echo "It's no longer possible to climb Pico Ruivo-your vacation are over. Maibe next time!"
                                 }
                             }
 
                             break
 
-                        // both parameters progression format throughout the month
-                        case 'October':
+                        // both parameters progression format throughout the mois
+                        case 'Octobre':
                         
                             def progressBar = { progress ->
                                 def filled = "=" * (progress / 10 as int)
@@ -584,18 +591,18 @@ pipeline {
                         
                             break
 
-                        // 2nd parameter dependent on 1st + progression format throughout the month
-                        case 'November':
+                        // 2nd parameter dependent on 1st + progression format throughout the mois
+                        case 'Novembre':
 
                             if (params.UKULELE?.toBoolean()) {
                                 echo "Congratulations! You bought your ukulele and you're off to a great start!"
                             } else {
                                 if (day < 5) {
-                                    echo "Don't forget to buy a ukulele! Starting early will help you achieve your November goal."
+                                    echo "Don't forget to buy a ukulele! Starting early will help you achieve your Novembre goal."
                                 } else if (day == 5) {
                                     echo "It's not too late! Grab a ukulele today and start your musical journey."
                                 } else {
-                                    echo "A bit behind, aren't we? To achieve your November goal, you need a ukulele. Time to get one and get started!"
+                                    echo "A bit behind, aren't we? To achieve your Novembre goal, you need a ukulele. Time to get one and get started!"
                                 }
                             }
 
@@ -642,17 +649,17 @@ pipeline {
                         
                             break
 
-                        case 'December':
+                        case 'Decembre':
                         
                             if (params.ZEN?.toBoolean()) {
-                                echo "Congratulations! You’ve created a 'zen' place at home. What a great way to start the month!"
+                                echo "Congratulations! You’ve created a 'zen' place at home. What a great way to start the mois!"
                             } else {
                                 if (day < 5) {
                                     echo "Don’t forget to prepare a 'zen' place at home! A peaceful space can make all the difference."
                                 } else if (day == 5) {
-                                    echo "It’s not too late! Create your 'zen' place today and bring calm to your December."
+                                    echo "It’s not too late! Create your 'zen' place today and bring calm to your Decembre."
                                 } else {
-                                    echo "December is moving fast—don’t miss the chance to create your 'zen' place this year!"
+                                    echo "Decembre is moving fast—don’t miss the chance to create your 'zen' place this year!"
                                 }
                             }
                         
@@ -664,7 +671,7 @@ pipeline {
                                 } else if (day == 5) {
                                     echo "It’s not too late! Choose your playlist today and enhance your relaxation time."
                                 } else {
-                                    echo "December is flying by—don’t miss the chance to curate your playlist for relaxation this year!"
+                                    echo "Decembre is flying by—don’t miss the chance to curate your playlist for relaxation this year!"
                                 }
                             }
                         
