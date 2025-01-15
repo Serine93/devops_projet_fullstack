@@ -82,15 +82,28 @@ pipeline {
                         ],
                         'Décembre': [
                             'US34': 'Pratiquer 5 minutes de respiration consciente chaque matin',
-                            'US35': 'Tester différentes techniques de respiration (cohérence cardiaque, méditation guidée)',
+                            'US35': 'Tester différentes techniques de respiration',
                             'US36': 'Intégrer la respiration consciente dans les moments de stress'
                         ]
                     ]
 
                     def selected_us = input message: 'Sélectionnez un objectif', parameters: [choice(name: 'Objectif', choices: monthly_objectives[params.MONTH].keySet().join(','))]
 
-                    def completed = input message: "As-tu complété cet objectif ?", parameters: [booleanParam(name: 'Complété')]
-                    echo completed ? "Bravo pour avoir atteint ${selected_us} !" : "Courage, tu peux le faire !"
+                    def progress = input message: "Saisis ta progression en pourcentage ou en nombre :", parameters: [string(name: 'Progression')]
+
+                    switch (selected_us) {
+                        case 'US02':
+                            echo progress.toInteger() >= 3 ? "Bravo !" : "Courage, tu vas y arriver !"
+                            break
+                        case 'US07':
+                            echo progress.toInteger() >= 8 ? "Bravo pour tes nuits réparatrices !" : "Courage, améliore ton sommeil !"
+                            break
+                        case 'US29':
+                            echo progress.toInteger() >= 75 ? "Félicitations pour ta persévérance !" : "Continue, tu es sur la bonne voie !"
+                            break
+                        default:
+                            echo progress.toInteger() > 0 ? "Bravo pour ta progression !" : "Ne lâche rien, tu vas réussir !"
+                    }
                 }
             }
         }
