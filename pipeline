@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'NAME', description: 'Quel est votre nom ?')
+        string(name: 'NOM', description: 'Quel est votre nom ?')
         choice(name: 'MOIS', choices: ['Janvier', 'Decembre'], description: 'Choisissez le mois')
         choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Choose the day accordingly to the mois')
     }
@@ -123,7 +123,7 @@ pipeline {
             }
         }
 
-        stage('Verification des Objectifs') {
+        stage('Verification') {
             steps {
                 script {
                     def jour = params.DAY.toInteger()
