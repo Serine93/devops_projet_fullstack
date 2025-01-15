@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'USER_NAME', defaultValue: '', description: 'Nom de l'utilisateur')
-        string(name: 'MOIS', defaultValue: '', description: 'Mois sélectionné')
-        string(name: 'JOUR', defaultValue: '', description: 'Jour sélectionné')
+        string(name: 'USER_NAME', defaultValue: '', description: "Nom de l'utilisateur")
+        string(name: 'MOIS', defaultValue: '', description: "Mois sélectionné")
+        string(name: 'JOUR', defaultValue: '', description: "Jour sélectionné")
     }
 
     stages {
