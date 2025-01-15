@@ -24,64 +24,73 @@ pipeline {
         stage('Sélectionner et Évaluer un Objectif') {
             steps {
                 script {
-                    def user_stories = [
-                        'US01': 'Décrire ma journée une fois par semaine',
-                        'US02': 'Décrire ma journée 3 fois par semaine',
-                        'US03': 'Décrire toutes mes journées pendant 1 mois',
-                        'US04': 'Faire un moodboard sur Pinterest de mes idées',
-                        'US05': 'Réaménager une pièce en fonction du moodboard',
-                        'US06': 'Acheter et installer au moins trois éléments de décoration choisis',
-                        'US07': 'Dormir 8h par nuit au minimum',
-                        'US08': 'Faire 30 minutes d’activité physique 3 fois par semaine',
-                        'US09': 'Pratiquer 10 minutes de méditation quotidienne',
-                        'US10': 'Faire un bocal avec 20 actions à dire et/ou à faire',
-                        'US11': 'Effectuer au moins 2 actions bienveillantes par semaine',
-                        'US12': 'Effectuer au moins 4 actions bienveillantes par semaine',
-                        'US13': 'Tester un nouveau loisir créatif',
-                        'US14': 'Tester la culture culinaire d’un autre pays au moins 2 fois par mois',
-                        'US15': 'Participer à deux ateliers ou événements jamais expérimentés',
-                        'US16': 'Planifier des cinémas entre amis au moins 1 fois par semaine',
-                        'US17': 'Voir au moins deux fois par semaine les parents',
-                        'US18': 'Organiser un week-end ou une sortie en famille ou entre amis',
-                        'US19': 'Réserver une place pour un concert ou festival',
-                        'US20': 'Danser librement pendant un événement musical',
-                        'US21': 'Découvrir deux nouveaux artistes ou groupes en live',
-                        'US22': 'Trouver un endroit sécurisé pour passer la nuit à la plage',
-                        'US23': 'Préparer le matériel nécessaire pour dormir confortablement',
-                        'US24': 'Passer au moins une nuit à la belle étoile sur la plage',
-                        'US25': 'Planifier un voyage dans une ville ou un pays jamais visité',
-                        'US26': 'Tester une spécialité culinaire locale lors de ce voyage',
-                        'US27': 'Écrire un résumé de cette expérience pour garder un souvenir',
-                        'US28': 'Identifier et s’inscrire à une formation en ligne ou en présentiel',
-                        'US29': 'Suivre au moins 75 % des cours et exercices proposés',
-                        'US30': 'Mettre en pratique les connaissances acquises dans un projet personnel',
-                        'US31': 'Choisir un instrument de musique à apprendre',
-                        'US32': 'Suivre des tutoriels ou cours pendant 30 minutes 3 fois par semaine',
-                        'US33': 'Jouer un morceau simple après un mois de pratique',
-                        'US34': 'Pratiquer 5 minutes de respiration consciente chaque matin',
-                        'US35': 'Tester différentes techniques de respiration (cohérence cardiaque, méditation guidée)',
-                        'US36': 'Intégrer la respiration consciente dans les moments de stress'
+                    def monthly_objectives = [
+                        'Janvier': [
+                            'US01': 'Décrire ma journée une fois par semaine',
+                            'US02': 'Décrire ma journée 3 fois par semaine',
+                            'US03': 'Décrire toutes mes journées pendant 1 mois'
+                        ],
+                        'Février': [
+                            'US04': 'Faire un moodboard sur Pinterest de mes idées',
+                            'US05': 'Réaménager une pièce en fonction du moodboard',
+                            'US06': 'Acheter et installer au moins trois éléments de décoration choisis'
+                        ],
+                        'Mars': [
+                            'US07': 'Dormir 8h par nuit au minimum',
+                            'US08': 'Faire 30 minutes d’activité physique 3 fois par semaine',
+                            'US09': 'Pratiquer 10 minutes de méditation quotidienne'
+                        ],
+                        'Avril': [
+                            'US10': 'Faire un bocal avec 20 actions à dire et/ou à faire',
+                            'US11': 'Effectuer au moins 2 actions bienveillantes par semaine',
+                            'US12': 'Effectuer au moins 4 actions bienveillantes par semaine'
+                        ],
+                        'Mai': [
+                            'US13': 'Tester un nouveau loisir créatif',
+                            'US14': 'Tester la culture culinaire d’un autre pays au moins 2 fois par mois',
+                            'US15': 'Participer à deux ateliers ou événements jamais expérimentés'
+                        ],
+                        'Juin': [
+                            'US16': 'Planifier des cinémas entre amis au moins 1 fois par semaine',
+                            'US17': 'Voir au moins deux fois par semaine les parents',
+                            'US18': 'Organiser un week-end ou une sortie en famille ou entre amis'
+                        ],
+                        'Juillet': [
+                            'US19': 'Réserver une place pour un concert ou festival',
+                            'US20': 'Danser librement pendant un événement musical',
+                            'US21': 'Découvrir deux nouveaux artistes ou groupes en live'
+                        ],
+                        'Août': [
+                            'US22': 'Trouver un endroit sécurisé pour passer la nuit à la plage',
+                            'US23': 'Préparer le matériel nécessaire pour dormir confortablement',
+                            'US24': 'Passer au moins une nuit à la belle étoile sur la plage'
+                        ],
+                        'Septembre': [
+                            'US25': 'Planifier un voyage dans une ville ou un pays jamais visité',
+                            'US26': 'Tester une spécialité culinaire locale lors de ce voyage',
+                            'US27': 'Écrire un résumé de cette expérience pour garder un souvenir'
+                        ],
+                        'Octobre': [
+                            'US28': 'Identifier et s’inscrire à une formation en ligne ou en présentiel',
+                            'US29': 'Suivre au moins 75 % des cours et exercices proposés',
+                            'US30': 'Mettre en pratique les connaissances acquises dans un projet personnel'
+                        ],
+                        'Novembre': [
+                            'US31': 'Choisir un instrument de musique à apprendre',
+                            'US32': 'Suivre des tutoriels ou cours pendant 30 minutes 3 fois par semaine',
+                            'US33': 'Jouer un morceau simple après un mois de pratique'
+                        ],
+                        'Décembre': [
+                            'US34': 'Pratiquer 5 minutes de respiration consciente chaque matin',
+                            'US35': 'Tester différentes techniques de respiration (cohérence cardiaque, méditation guidée)',
+                            'US36': 'Intégrer la respiration consciente dans les moments de stress'
+                        ]
                     ]
 
-                    def selected_us = input message: 'Sélectionnez un objectif', parameters: [choice(name: 'Objectif', choices: user_stories.keySet().join(','))]
+                    def selected_us = input message: 'Sélectionnez un objectif', parameters: [choice(name: 'Objectif', choices: monthly_objectives[params.MONTH].keySet().join(','))]
 
-                    switch (selected_us) {
-                        case 'US01':
-                            def progress = input message: "As-tu décrit ta journée cette semaine ?", parameters: [booleanParam(name: 'Complété')]
-                            echo progress ? "Bravo !" : "Courage, tu vas y arriver !"
-                            break
-                        case 'US02':
-                            def freq = input message: "Combien de fois as-tu écrit cette semaine ? (1-3)", parameters: [string(name: 'Fréquence')]
-                            echo (freq.toInteger() == 3) ? "Bravo !" : "Courage, continue !"
-                            break
-                        case 'US29':
-                            def progress = input message: "Quel pourcentage de la formation as-tu terminé ? (0-100)", parameters: [string(name: 'Pourcentage')]
-                            echo (progress.toInteger() >= 75) ? "Bravo !" : "Courage, continue !"
-                            break
-                        default:
-                            def completed = input message: "As-tu complété cet objectif ?", parameters: [booleanParam(name: 'Complété')]
-                            echo completed ? "Bravo !" : "Courage, continue !"
-                    }
+                    def completed = input message: "As-tu complété cet objectif ?", parameters: [booleanParam(name: 'Complété')]
+                    echo completed ? "Bravo pour avoir atteint ${selected_us} !" : "Courage, tu peux le faire !"
                 }
             }
         }
