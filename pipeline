@@ -23,15 +23,12 @@ pipeline {
         stage('Select User Story') {
             steps {
                 script {
-                    def userStories = input(
-                        id: 'UserStorySelection', message: "Sélectionnez vos User Stories pour ${params.MONTH}", parameters: [
-                            [$class: 'CheckboxParameterDefinition',
-                             name: 'SELECTED_US',
-                             choices: "US01 - Décrire ma journée une fois par semaine\nUS02 - Décrire ma journée 3 fois par semaine\nUS03 - Décrire toutes mes journées pendant 1 mois",
-                             description: 'Choisissez une ou plusieurs User Stories']
+                    def userStory = input(
+                        id: 'UserStorySelection', message: "Sélectionnez votre User Story pour ${params.MONTH}", parameters: [
+                            choice(name: 'SELECTED_US', choices: ['US01 - Décrire ma journée une fois par semaine', 'US02 - Décrire ma journée 3 fois par semaine', 'US03 - Décrire toutes mes journées pendant 1 mois'], description: 'Choisissez une User Story')
                         ]
                     )
-                    echo "User Stories sélectionnées : ${userStories}"
+                    echo "User Story sélectionnée : ${userStory}"
                 }
             }
         }
