@@ -67,6 +67,8 @@ pipeline {
         stage('DEPLOY') {
             steps {
                 echo 'Mise en production...'
+
+
             }
         }
     }
