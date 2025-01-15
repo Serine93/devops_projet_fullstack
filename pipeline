@@ -1,77 +1,677 @@
 pipeline {
-    agent any
-    
+    agent any 
+
     parameters {
-        string(name: 'NAME', description: 'Please tell me your name')
-        choice(name: 'MONTH', choices: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'], description: 'Select Month')
-        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Select Day')
+        string(name: 'NAME', description: 'Please tell me your name?')
+        choice(name: 'MONTH', choices: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], description: 'Choose the month')
+        choice(name: 'DAY', choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'], description: 'Choose the day accordingly to the month')
     }
     
     stages {
-        stage('Printing name') {
+
+        stage('Set Goals for the month') {
             steps {
                 script {
-                    def name = "${params.NAME}"
-                    def month = "${params.MONTH}"
-                    def day = "${params.DAY}"
-                    echo "Mrs. $name"
-                    echo "Selected Date: $month $day"
-                }
-            }
-        }
-       
-        stage('Select User Story') {
-            steps {
-                script {
-                    def userStories = [
-                        'US01 - Décrire ma journée une fois par semaine',
-                        'US02 - Décrire ma journée 3 fois par semaine',
-                        'US03 - Décrire toutes mes journées pendant 1 mois'
-                    ]
-                    def selectedUS = input(
-                        message: "Sélectionnez vos User Stories pour ${params.MONTH}",
-                        parameters: [
-                            [$class: 'CascadeChoiceParameter',
-                             choiceType: 'PT_CHECKBOX',
-                             name: 'SELECTED_US',
-                             description: 'Choisissez une ou plusieurs User Stories',
-                             randomName: 'choice-parameter',
-                             filterLength: '1',
-                             filterable: true,
-                             referencedParameters: '',
-                             script: [
-                                $class: 'GroovyScript',
-                                script: [
-                                    classpath: [],
-                                    sandbox: true,
-                                    script: "return ${userStories}"
-                                ]
-                             ]
+
+                    def booleanGoals = []
+
+                    switch(params.MONTH) {
+
+                        case 'January':
+                            booleanGoals = [ 
+                                booleanParam(name: "BUY_DIARY", description: "Have you bought your diary?"),
+                                booleanParam(name: "QUOTE", description: "Have you written a quote that matches your mood?")
                             ]
-                        ]
-                    )
-                    echo "User Stories sélectionnées : ${selectedUS}"
+                            break
+
+                        case 'February':
+                            booleanGoals = [ 
+                                booleanParam(name: "DECORATION_THEME", description: "Have you chosen your theme?"),
+                                booleanParam(name: "DECORATION_PURCHASE", description: "Have you bought the decoration?"),
+                                booleanParam(name: "DECORATION_HOUSE", description: "Have you redecorate your house?")
+                            ]
+                            break
+
+                        case 'March':
+                            booleanGoals = [ 
+                                booleanParam(name: "TWENTY_KM", description: "Have you run your 20 km?"),
+                                booleanParam(name: "GYM", description: "Have you signed up for the gym?"),
+                                booleanParam(name: "YOGA", description: "Have you signed up for yoga classes?")
+                            ]
+                            break
+
+                        case 'April':
+                            booleanGoals = [ 
+                                booleanParam(name: "VOLUNTEER", description: "Have you volunteered this month?"),
+                                booleanParam(name: "POST_IT", description: "Have you put kind post-it on the desk of your colleagues to brighten their day?"),
+                                booleanParam(name: "BOUQUET", description: "Have you made a bouquet of wild flowers for your parents?")
+                            ]
+                            break
+
+                        case 'May':
+                            booleanGoals = [ 
+                                booleanParam(name: "SUSHI", description: "Have you taken a sushi lesson with a sushi chef?"),
+                                booleanParam(name: "WEEKEND", description: "Have you been on a road trip weekend?")
+                            ]
+                            break
+
+                        case 'June':
+                            booleanGoals = [ 
+                                booleanParam(name: "RESTAURANT", description: "Have you invited your parents to the restaurant?"),
+                                booleanParam(name: "GAMES", description: "Have you spent a whole night playing games with your friends?"),
+                                booleanParam(name: "BAKING", description: "Have you spent an afternoon baking with your Grandma?")
+                            ]
+                            break
+
+                        case 'July':
+                            booleanGoals = [ 
+                                booleanParam(name: "VIEILLES_CHARRUES", description: "Have you been to Les Vieilles Charrues festival?"),
+                                booleanParam(name: "ORCHESTRA_CONCERT", description: "Have you been to the concert by your old orchestra?")
+                            ]
+                            break
+
+                        case 'August':
+                            booleanGoals = [ 
+                                booleanParam(name: "CHECKLIST", description: "Have you written your checklist?"),
+                                booleanParam(name: "FIRE", description: "Have you learnt how to do a fire?")
+                            ]
+                            break
+
+                        case 'September':
+                            booleanGoals = [ 
+                                booleanParam(name: "DOLOMITES", description: "Have you hiked in the Swiss Dolomites?"),
+                                booleanParam(name: "PICO_RUIVO", description: "Have you climbed Pico Ruivo in Madeira?")
+                            ]
+                            break
+
+                        case 'October':
+                            booleanGoals = [ 
+                                booleanParam(name: "KUBERNETES", description: "Have you mastered Kubernetes?"),
+                                booleanParam(name: "INVESTMENTS", description: "Have you learnt how to invest money on the stock market?")
+                            ]
+                            break
+
+                        case 'November':
+                            booleanGoals = [ 
+                                booleanParam(name: "UKULELE", description: "Have you bought a ukulele?"),
+                                booleanParam(name: "CHORDS", description: "Have you mastered the 4 chords G M, D M, E m, and C M?")
+                            ]
+                            break
+
+                        case 'December':
+                            booleanGoals = [ 
+                                booleanParam(name: "ZEN", description: "Have you prepared a 'zen' place at home?"),
+                                booleanParam(name: "PLAYLIST", description: "Have you chosen a playlist to accompany these moments of relaxation?")
+                            ]
+                            break
+
+                    }
+    
+                    if (booleanGoals) {
+                        currentBuild.description = "Reconfiguring parameters for ${params.MONTH}"
+                        def updatedParams = input message: "Fill out the goals for ${params.MONTH}", parameters: booleanGoals
+                        params = params + updatedParams
+                    }
                 }
             }
         }
 
-        stage('BUILD') {
+        stage('Check Goals for the day') {
             steps {
                 script {
-                    echo "BUILD - Name: ${params.NAME}, Month: ${params.MONTH}, Day: ${params.DAY}"
+
+                    def day = params.DAY.toInteger()
+
+                    def suffix = day % 10 == 1 && day != 11 ? "st" :
+                                 day % 10 == 2 && day != 12 ? "nd" :
+                                 day % 10 == 3 && day != 13 ? "rd" : "th"
+
+                    echo "Checking goals for ${params.MONTH}, ${day}${suffix}..."
+
+                    switch (params.MONTH) {
+
+                        // 2nd parameter dependent on 1st
+                        case 'January':
+
+                            if (params.BUY_DIARY?.toBoolean()) {
+                                echo "Congratulations! You bought your diary and you're off to a great start!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to buy a diary! Starting early will help you achieve your January goal."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Grab a diary today and start your journaling journey."
+                                } else {
+                                    echo "A bit behind, aren't we? To achieve your January goal, you need a diary. Time to get one and get started!"
+                                }
+                            }
+
+                            if (params.QUOTE?.toBoolean() && params.BUY_DIARY?.toBoolean()) {
+                                echo "Great job writing a quote that reflects your mood today! It's a beautiful way to connect with your emotions and express yourself."
+                            } else if (!params.QUOTE?.toBoolean() && params.BUY_DIARY?.toBoolean()) {
+                                echo "Remember to write a quote that matches your mood today! It's a small yet meaningful step to bring clarity to your thoughts and emotions."
+                            } else if (params.QUOTE?.toBoolean() && !params.BUY_DIARY?.toBoolean()) {
+                                echo "Did you write on a random paper? Writing is the most important-don't give up!"
+                            } else {
+                                echo "Can't write without a diary? Buy one!"
+                            }
+                          
+                            break
+
+                        // 2nd parameter dependent on 1st
+                        // 3rd parameter dependent on 1st and 2nd
+                        case 'February':
+
+                            if (params.DECORATION_THEME?.toBoolean()) {
+                                echo "Congratulations on choosing your decoration theme! You're on the right track!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to choose your decoration theme! It's the first step to transforming your space."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Choose your decoration theme today and get started."
+                                } else {
+                                    echo "Choosing a decoration theme is essential! Time is flying—get started soon to stay on track!"
+                                }
+                            }
+
+                            if (params.DECORATION_THEME?.toBoolean()) {
+                                if (params.DECORATION_PURCHASE?.toBoolean()) {
+                                    echo "Well done buying your decorations! You're making great progress!"
+                                } else {
+                                    if (day < 15) {
+                                        echo "Don't forget to buy your decorations! Having them ready will make the process smoother."
+                                    } else if (day == 15) {
+                                        echo "It's not too late! Buy your decorations today and you're still on track."
+                                    } else {
+                                        echo "You haven't bought your decorations yet? Time to hurry—February is slipping away!"
+                                    }
+                                }
+                            } else {
+                                if (params.DECORATION_PURCHASE?.toBoolean()) {
+                                    echo "Well done buying your decorations! Which theme did you choose?"
+                                } else {
+                                    if (day < 15) {
+                                        echo "Don't forget to choose a theme and buy your decorations! Having them ready will make the process smoother."
+                                    } else if (day == 15) {
+                                        echo "It's not too late! Choose your theme and buy your decorations today and you're still on track."
+                                    } else {
+                                        echo "You haven't decided your theme nor bought your decorations yet? Time to hurry—February is slipping away!"
+                                    }
+                                }
+                            }
+
+                            if (params.DECORATION_THEME?.toBoolean()) {
+                                if (params.DECORATION_PURCHASE?.toBoolean()) {
+                                    if (params.DECORATION_HOUSE?.toBoolean()) {
+                                        echo "Amazing! Your home is looking fantastic after redecorating—great work!"
+                                    } else {
+                                        if (day < 25) {
+                                            echo "Don't forget to start redecorating your home! The sooner you begin, the more enjoyable the result."
+                                        } else if (day == 25) {
+                                            echo "It's not too late! Start redecorating today!"
+                                        } else {
+                                            echo "February is almost over, and your home isn't redecorated yet? Time to get moving—there's still time to make a difference!"
+                                        }
+                                    }
+                                } else {
+                                    if (params.DECORATION_HOUSE?.toBoolean()) {
+                                        echo "Did you DIY? Your home is looking fantastic after redecorating—great work! "
+                                    } else {
+                                        if (day < 25) {
+                                            echo "Don't forget to buy the decoration and start redecorating your home! The sooner you begin, the more enjoyable the result."
+                                        } else if (day == 25) {
+                                            echo "It's not too late! Buy the decoration and start redecorating today!"
+                                        } else {
+                                            echo "February is almost over, and your home isn't redecorated yet? you haven't bought decoration neither? Time to get moving—there's still time to make a difference!"
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (params.DECORATION_PURCHASE?.toBoolean()) {
+                                    if (params.DECORATION_HOUSE?.toBoolean()) {
+                                        echo "Amazing! Your home is looking fantastic after redecorating—great work! Which theme did you choose?"
+                                    } else {
+                                        if (day < 25) {
+                                            echo "Don't forget to start redecorating your home! The sooner you begin, the more enjoyable the result."
+                                        } else if (day == 25) {
+                                            echo "It's not too late! Start redecorating today!"
+                                        } else {
+                                            echo "February is almost over, and your home isn't redecorated yet? Time to get moving—there's still time to make a difference!"
+                                        }
+                                    }
+                                } else {
+                                    if (params.DECORATION_HOUSE?.toBoolean()) {
+                                        echo "Which theme did you choose? Did you DIY? Your home is looking fantastic after redecorating—great work!"
+                                    } else {
+                                        if (day < 25) {
+                                            echo "Don't forget to choose a theme, buy the decoration, and start redecorating your home! The sooner you begin, the more enjoyable the result."
+                                        } else if (day == 25) {
+                                            echo "It's not too late! Choose a theme, buy the decoration, and start redecorating today!"
+                                        } else {
+                                            echo "February is almost over, and your home isn't redecorated yet? you haven't bought decoration neither? you haven't chosen your theme?? Time to get moving—there's still time to make a difference!"
+                                        }
+                                    }
+                                }
+                            }
+
+                            break
+
+                        // 2nd parameter progression format throughout the month
+                        case 'March':
+
+                            def progressBar = { progress ->
+                                def filled = "=" * (progress / 10 as int)
+                                def empty = " " * (10 - (progress / 10 as int))
+                                return "|${filled}${empty}| ${progress}%"
+                            }
+
+                            if (params.TWENTY_KM?.toBoolean()) {
+                                def progress = 100 
+                                echo "20 km: ${progressBar(progress as int)}"
+                                echo "Congratulations on running 20 km this month! Your dedication to fitness is inspiring!"
+                            } else {
+                                def completedDistance = input(
+                                    message: "Enter the distance you've run so far (in km):",
+                                    parameters: [
+                                        string(name: 'COMPLETED_DISTANCE', description: 'Distance in kilometers', defaultValue: '0')
+                                    ]
+                                ) as int
+                                def totalDistance = 20
+                                def progress = (completedDistance / totalDistance) * 100
+                                echo "20 km: ${progressBar(progress as int)}"
+                                if (0 != progress){
+                                    echo "You're on your way to completing the 20 km goal! Keep running—March isn't over yet!"
+                                } else {
+                                    echo "It's not too late to start! Motivation is the key."
+                                }
+                            }
+                        
+                            if (params.GYM?.toBoolean()) {
+                                echo "Congratulations on signing up for the gym! You're taking charge of your fitness goals!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to sign up for the gym! Getting started early will make all the difference for your March fitness goal."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Sign up for the gym today and start working on your goals!"
+                                } else {
+                                    echo "Still haven't signed up for the gym? March is moving fast—get to it and crush those fitness goals!"
+                                }
+                            }
+                        
+                            if (params.YOGA?.toBoolean()) {
+                                echo "Congratulations on signing up for yoga classes! Time to find your zen and improve flexibility."
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to sign up for yoga classes! Starting early will help you establish a routine."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Sign up for yoga classes today and start your wellness journey."
+                                } else {
+                                    echo "March is flying by—don't miss your chance to sign up for yoga classes and achieve your fitness goals!"
+                                }
+                            }
+
+                            break
+
+                        case 'April':
+
+                            if (params.VOLUNTEER?.toBoolean()) {
+                                echo "Amazing! You've volunteered this month. Thank you for making a difference!"
+                            } else {
+                                echo "Remember to volunteer this month! Helping others is a great way to spread kindness and make an impact."
+                            }
+                        
+                            if (params.POST_IT?.toBoolean()) {
+                                echo "Wonderful! You've brightened someone's day by leaving a kind post-it. Such a thoughtful gesture!"
+                            } else {
+                                if (day < 22) {
+                                    echo "Don't forget to leave a kind post-it on your colleagues' desks before going on vacation! It’s a small action that can bring big smiles."
+                                } else if (day == 22) {
+                                    echo "It's not too late! Leave a kind post-it today to brighten someone’s day before your holidays."
+                                } else {
+                                    echo "April is almost over, but there's still time to spread kindness in another way!"
+                                }
+                            }
+                        
+                            if (params.BOUQUET?.toBoolean()) {
+                                echo "Beautiful! You've made a bouquet of wildflowers for your parents. What a lovely gesture!"
+                            } else {
+                                if (day < 20) {
+                                    echo "Don’t forget to gather wildflowers and create a bouquet for your parents before their holidays in Japan. It’s a thoughtful way to show love."
+                                } else if (day == 20) {
+                                    echo "It’s not too late! Make a bouquet today and surprise your parents with a beautiful gesture before their flight to Japan tomorrow."
+                                } else {
+                                    echo "The month is nearly over and your parents went on vacation—don’t miss the chance to make a bouquet of wildflowers for your Grandma instead!"
+                                }
+                            }
+
+                            break
+
+                        case 'May':
+
+                            if (params.SUSHI?.toBoolean()) {
+                                echo "Fantastic! You’ve taken a sushi lesson with a sushi chef. Your culinary skills are leveling up!"
+                            } else {
+                                if (day < 25) {
+                                    echo "Don’t forget to take a sushi lesson with a sushi chef before he returns to Japan! It’s a fun way to learn something new this May."
+                                } else if (day == 25) {
+                                    echo "It’s not too late! Sign up for a sushi lesson with a sushi chef today (before he returns to Japan) and make your May memorable."
+                                } else {
+                                    echo "May is flying by and the sushi chef returned to Japan—don’t miss the chance to take another cooking lesson!"
+                                }
+                            }
+                        
+                            if (params.WEEKEND?.toBoolean()) {
+                                echo "Awesome! You’ve been on a road trip weekend. What a great way to unwind and explore!"
+                            } else {
+                                if (day < 30) {
+                                    echo "Don’t forget to plan a road trip weekend this May! The open road is calling."
+                                } else {
+                                    echo "It’s not too late! Take a road trip this weekend and enjoy the last days of May!"
+                                }
+                            }
+
+                            break
+
+                        case 'June':
+
+                            if (params.RESTAURANT?.toBoolean()) {
+                                echo "Wonderful! You’ve invited your parents to the restaurant this June. They must have enjoyed the treat!"
+                            } else {
+                                if (day < 23) {
+                                    echo "Don’t forget to invite your parents to the restaurant this June before their trip to Brazil! They’ll love spending time with you."
+                                } else if (day == 23) {
+                                    echo "It’s not too late! Take your parents to the restaurant today and make their last day before their trip to Brazil special."
+                                } else {
+                                    echo "June is almost over, your parents are enjoying Brazil, and you haven’t invited them to the restaurant? Make time for them another time!"
+                                }
+                            }
+                        
+                            if (params.GAMES?.toBoolean()) {
+                                echo "Awesome! You’ve spent a whole night playing games with your friends. Such a fun way to bond!"
+                            } else {
+                                if (day < 28) {
+                                    echo "Don’t forget to plan a games night with your friends! Laughter and fun await you."
+                                } else if (day == 28) {
+                                    echo "Last chance! Plan your games night today and enjoy an evening full of fun and laughter!"
+                                } else {
+                                    echo "It’s no longer possible to have a games night this June. Make sure to plan one soon in the future!"
+                                }
+                            }
+                        
+                            if (params.BAKING?.toBoolean()) {
+                                echo "Lovely! You’ve spent an afternoon baking with your Grandma. What a sweet and memorable moment!"
+                            } else {
+                                if (day < 28) {
+                                    echo "Don’t forget to spend an afternoon baking with your Grandma! It’s a heartwarming way to bond with her."
+                                } else if (day == 28 || day == 29) {
+                                    echo "Last chance! Bake with your Grandma today and create some wonderful memories together."
+                                } else {
+                                    echo "It’s no longer possible to bake with Grandma this June. Don’t miss the chance to spend time with her next time!"
+                                }
+                            }
+
+                            break
+
+                        // validity period for both parameters
+                        case 'July':
+
+                            if (params.VIEILLES_CHARRUES?.toBoolean()) {
+                                if (day < 17) {
+                                    echo "Congratulations for reserving your place in advance for Les Vieilles Charrues!"
+                                } else if (day == 17) {
+                                    echo "Have fun at Les Vieilles Charrues! Enjoy the festival!"
+                                } else {
+                                    echo "Hope you had an amazing time at Les Vieilles Charrues!"
+                                }
+                            } else {
+                                if (day < 17) {
+                                    echo "Don't forget to reserve your place for Les Vieilles Charrues! It’s going to be an unforgettable event."
+                                } else if (day == 17) {
+                                    echo "It's today—last chance to go to Les Vieilles Charrues!"
+                                } else {
+                                    echo "It's no longer possible to attend Les Vieilles Charrues this year. Maybe next year!"
+                                }
+                            }
+                        
+                            if (params.ORCHESTRA_CONCERT?.toBoolean()) {
+                                if (day < 6) {
+                                    echo "Congratulations for reserving your place in advance for your old orchestra concert!"
+                                } else if (day == 6) {
+                                    echo "Have fun at the orchestra concert! Enjoy the beautiful music!"
+                                } else {
+                                    echo "Hope you enjoyed the concert by your old orchestra!"
+                                }
+                            } else {
+                                if (day < 6) {
+                                    echo "Don't forget to reserve your place for the orchestra concert! It’ll be a great event."
+                                } else if (day == 6) {
+                                    echo "It's today—last chance to attend your orchestra concert!"
+                                } else {
+                                    echo "It's no longer possible to attend the orchestra concert this year. Maybe next time!"
+                                }
+                            }
+
+                            break
+
+                        case 'August':
+
+                            if (params.CHECKLIST?.toBoolean()) {
+                                if (day <= 14) {
+                                    echo "Congratulations on completing your checklist! You're all set and prepared for your trip!"
+                                } else {
+                                    echo "Hope that you found your checklist useful during the trip!"
+                                }
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to write your checklist! It's an important part of preparation for your trip."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Write your checklist today to ensure you're fully prepared."
+                                } else if (5 < day && day < 14) {
+                                    echo "Don't forget to do your checklist—it’s a critical part of preparation for your trip!"
+                                } else {
+                                    echo "Too late for the checklist-hope you didn't forget anything..."
+                                }
+                            }
+                        
+                            if (params.FIRE?.toBoolean()) {
+                                if (day <= 14) {
+                                    echo "Congratulations on learning how to make a fire! You'll stay warm under the stars during your trip!"
+                                } else {
+                                    echo "Hope you didn't freeze, and congratulations on learning a new survival skill!"
+                                }
+                            } else {
+                                if (day < 14) {
+                                    echo "Learn how to make a fire to be sure you don't freeze at night during your trip!"
+                                } else if (day == 14) {
+                                    echo "It's gonna freeze tonight!"
+                                } else {
+                                    echo "Hope you didn’t freeze too much, but at least it’s a great story to tell!"
+                                }
+                            }
+
+                            break
+
+                        // validity period for both parameters
+                        case 'September':
+
+                            if (params.DOLOMITES?.toBoolean()) {
+                                if (day < 10) {
+                                    echo "Holidays are coming! Congratulations for planning your Swiss Dolomites hike in advance! You're well-prepared!"
+                                } else if (day >= 10 && day <= 15) {
+                                    echo "Have fun hiking in the Swiss Dolomites! Enjoy the breathtaking views!"
+                                } else {
+                                    echo "Hope you had an unforgettable experience hiking in the Swiss Dolomites!"
+                                }
+                            } else {
+                                if (day < 10) {
+                                    echo "Holidays are coming! Don't forget to plan your hike in the Swiss Dolomites! The adventure awaits!"
+                                } else if (day >= 10 && day <= 15) {
+                                    echo "It's the perfect time to hike in the Swiss Dolomites—don't miss this opportunity!"
+                                } else {
+                                    echo "It's no longer possible to hike in the Swiss Dolomites-your vacation are over. Maybe next time!"
+                                }
+                            }
+                        
+                            if (params.PICO_RUIVO?.toBoolean()) {
+                                if (day < 19) {
+                                    echo "Holidays are coming! Congratulations for planning your Pico Ruivo climb in advance! You're all set for an amazing adventure!"
+                                } else if (day >= 19 && day <= 26) {
+                                    echo "Enjoy your climb to Pico Ruivo! The views from Madeira's highest peak will be worth it!"
+                                } else {
+                                    echo "Hope you had an incredible experience climbing Pico Ruivo!"
+                                }
+                            } else {
+                                if (day < 19) {
+                                    echo "Holidays are coming! Don't forget to plan your climb to Pico Ruivo! It's an adventure you won't want to miss."
+                                } else if (day >= 19 && day <= 26) {
+                                    echo "It's the perfect time to climb Pico Ruivo—make sure you don't miss out!"
+                                } else {
+                                    echo "It's no longer possible to climb Pico Ruivo-your vacation are over. Maybe next time!"
+                                }
+                            }
+
+                            break
+
+                        // both parameters progression format throughout the month
+                        case 'October':
+                        
+                            def progressBar = { progress ->
+                                def filled = "=" * (progress / 10 as int)
+                                def empty = " " * (10 - (progress / 10 as int))
+                                return "|${filled}${empty}| ${progress}%"
+                            }
+                        
+                            if (params.KUBERNETES?.toBoolean()) {
+                                def progress = 100
+                                echo "Kubernetes modules: ${progressBar(progress)}"
+                                echo "Congratulations on mastering Kubernetes! You're now a container orchestration pro!"
+                            } else {
+                                def completedModules = input(
+                                    message: "Enter the number of Kubernetes modules you've completed so far (max.: 20):",
+                                    parameters: [
+                                        string(name: 'COMPLETED_MODULES', description: 'Number of completed modules', defaultValue: '0')
+                                    ]
+                                ) as int
+                                def totalModules = 20 
+                                def progress = (completedModules / totalModules) * 100
+                                echo "Kubernetes modules: ${progressBar(progress as int)}"
+                                if (0 != progress){
+                                    echo "You're on your way to mastering Kubernetes! Keep learning—it’s a valuable skill."
+                                } else {
+                                    echo "It's not too late to start! Motivation is the key."
+                                }
+                            }
+                        
+                            if (params.INVESTMENTS?.toBoolean()) {
+                                def progress = 100
+                                echo "Investment lessons: ${progressBar(progress)}"
+                                echo "Congratulations on learning how to invest on the stock market! You’re on your way to financial independence."
+                            } else {
+                                def completedLessons = input(
+                                    message: "Enter the number of investment lessons you've completed so far (max. 16):",
+                                    parameters: [
+                                        string(name: 'COMPLETED_LESSONS', description: 'Number of completed lessons', defaultValue: '0')
+                                    ]
+                                ) as int
+                                def totalLessons = 16
+                                def progress = (completedLessons / totalLessons) * 100
+                                echo "Investment lessons: ${progressBar(progress as int)}"
+                                if (0 != progress){
+                                    echo "You're making progress on learning to invest! Keep going—it’s an important skill for your future."
+                                } else {
+                                    echo "It's not too late to start! Motivation is the key."
+                                }
+                            }
+                        
+                            break
+
+                        // 2nd parameter dependent on 1st + progression format throughout the month
+                        case 'November':
+
+                            if (params.UKULELE?.toBoolean()) {
+                                echo "Congratulations! You bought your ukulele and you're off to a great start!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to buy a ukulele! Starting early will help you achieve your November goal."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Grab a ukulele today and start your musical journey."
+                                } else {
+                                    echo "A bit behind, aren't we? To achieve your November goal, you need a ukulele. Time to get one and get started!"
+                                }
+                            }
+
+                            def progressBar = { progress ->
+                                def filled = "=" * (progress / 10 as int)
+                                def empty = " " * (10 - (progress / 10 as int))
+                                return "|${filled}${empty}| ${progress}%"
+                            }
+                            def progress = 0
+
+                            if (params.CHORDS?.toBoolean()) {
+                                progress = 100
+                                echo "Chords: ${progressBar(progress)}"
+                                if (!params.UKULELE?.toBoolean()) {
+                                    echo "Have you been practicing on another instrument? Keep going, but don’t forget to get a ukulele!"
+                                } 
+                                echo "Congratulations on mastering the four chords G M, D M, E m, and C M! You're ready to play some great tunes!"
+                            } else { 
+                                if (params.UKULELE?.toBoolean()) {
+                                    def completedChords = input(
+                                        message: "Enter the number of chords you've mastered so far (out of 4):",
+                                        parameters: [
+                                            string(name: 'COMPLETED_CHORDS', description: 'Number of mastered chords', defaultValue: '0')
+                                        ]
+                                    ) as int
+                                    def totalChords = 4
+                                    progress = (completedChords / totalChords) * 100
+                                    echo "Chords: ${progressBar(progress as int)}"
+                                } else {
+                                    def totalChords = 4
+                                    progress = (0 / totalChords) * 100
+                                    echo "Chords: ${progressBar(progress as int)}"
+                                }
+                                if (0 != progress && params.UKULELE?.toBoolean()){
+                                    echo "You're on your way to mastering the chords! Keep practicing—it’s all about consistency."
+                                } else if (0 != progress && !params.UKULELE?.toBoolean()){
+                                    echo "Have you been practicing on another instrument? Keep going, but don’t forget to get a ukulele!"
+                                } else if (progress == 0 && params.UKULELE?.toBoolean()){
+                                    echo "It's not too late to start! Motivation is the key."
+                                } else {
+                                    echo "Can't start without a ukulele? Buy one!"
+                                }
+                            }
+                        
+                            break
+
+                        case 'December':
+                        
+                            if (params.ZEN?.toBoolean()) {
+                                echo "Congratulations! You’ve created a 'zen' place at home. What a great way to start the month!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don’t forget to prepare a 'zen' place at home! A peaceful space can make all the difference."
+                                } else if (day == 5) {
+                                    echo "It’s not too late! Create your 'zen' place today and bring calm to your December."
+                                } else {
+                                    echo "December is moving fast—don’t miss the chance to create your 'zen' place this year!"
+                                }
+                            }
+                        
+                            if (params.PLAYLIST?.toBoolean()) {
+                                echo "Congratulations! You’ve chosen a playlist to accompany your relaxation moments. Time to unwind!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don’t forget to choose a playlist to accompany your relaxation moments! Music can set the perfect mood."
+                                } else if (day == 5) {
+                                    echo "It’s not too late! Choose your playlist today and enhance your relaxation time."
+                                } else {
+                                    echo "December is flying by—don’t miss the chance to curate your playlist for relaxation this year!"
+                                }
+                            }
+                        
+                            break
+    
+                    }
                 }
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                echo 'Testing'
-            }
-        }
-        
-        stage('DEPLOY') {
-            steps {
-                echo 'Mise en Production'
             }
         }
     }
