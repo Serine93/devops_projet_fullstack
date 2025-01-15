@@ -23,12 +23,34 @@ pipeline {
         stage('Select User Story') {
             steps {
                 script {
-                    def userStory = input(
-                        id: 'UserStorySelection', message: "Sélectionnez votre User Story pour ${params.MONTH}", parameters: [
-                            choice(name: 'SELECTED_US', choices: ['US01 - Décrire ma journée une fois par semaine', 'US02 - Décrire ma journée 3 fois par semaine', 'US03 - Décrire toutes mes journées pendant 1 mois'], description: 'Choisissez une User Story')
+                    def userStories = [
+                        'US01 - Décrire ma journée une fois par semaine',
+                        'US02 - Décrire ma journée 3 fois par semaine',
+                        'US03 - Décrire toutes mes journées pendant 1 mois'
+                    ]
+                    def selectedUS = input(
+                        message: "Sélectionnez vos User Stories pour ${params.MONTH}",
+                        parameters: [
+                            [$class: 'CascadeChoiceParameter',
+                             choiceType: 'PT_CHECKBOX',
+                             name: 'SELECTED_US',
+                             description: 'Choisissez une ou plusieurs User Stories',
+                             randomName: 'choice-parameter',
+                             filterLength: '1',
+                             filterable: true,
+                             referencedParameters: '',
+                             script: [
+                                $class: 'GroovyScript',
+                                script: [
+                                    classpath: [],
+                                    sandbox: true,
+                                    script: "return ${userStories}"
+                                ]
+                             ]
+                            ]
                         ]
                     )
-                    echo "User Story sélectionnée : ${userStory}"
+                    echo "User Stories sélectionnées : ${selectedUS}"
                 }
             }
         }
