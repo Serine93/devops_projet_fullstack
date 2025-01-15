@@ -21,25 +21,7 @@ pipeline {
                 expression { params.MOIS == 'Janvier' }
             }
             steps {
-                script {
-                    if (params.US01 == '1') {
-                        echo "Bravo pour avoir décrit ta journée une fois cette semaine !"
-                    } else {
-                        echo "Courage, tu vas y arriver !"
-                    }
-
-                    if (params.US02.toInteger() >= 3) {
-                        echo "Bravo pour avoir décrit ta journée trois fois cette semaine !"
-                    } else {
-                        echo "Courage, tu vas y arriver !"
-                    }
-
-                    if (params.US03.toInteger() == 30) {
-                        echo "Bravo pour avoir décrit toutes tes journées du mois !"
-                    } else {
-                        echo "Courage, tu vas y arriver !"
-                    }
-                }
+                echo "Évaluation des objectifs de janvier..."
             }
         }
 
@@ -48,25 +30,7 @@ pipeline {
                 expression { params.MOIS == 'Février' }
             }
             steps {
-                script {
-                    if (params.US04 == '1') {
-                        echo "Bravo pour avoir fait un moodboard sur Pinterest !"
-                    } else {
-                        echo "Courage, tu vas y arriver !"
-                    }
-
-                    if (params.US05 == '1') {
-                        echo "Bravo pour avoir réaménagé une pièce selon ton moodboard !"
-                    } else {
-                        echo "Courage, tu vas y arriver !"
-                    }
-
-                    if (params.US06.toInteger() >= 3) {
-                        echo "Bravo pour avoir acheté et installé au moins trois éléments de décoration !"
-                    } else {
-                        echo "Courage, tu vas y arriver !"
-                    }
-                }
+                echo "Évaluation des objectifs de février..."
             }
         }
     }
