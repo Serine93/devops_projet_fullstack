@@ -2,83 +2,71 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'NAME', description: 'Please tell me your name')
+        string(name: 'NAME', description: 'Veuillez entrer votre nom')
         choice(name: 'MONTH', choices: ['Janvier', 'Février'], description: 'Choisissez le mois')
         choice(name: 'DAY', choices: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'], description: 'Choisissez le jour')
+        choice(name: 'OBJECTIVE', choices: [
+            'US01 - Décrire ma journée une fois par semaine',
+            'US02 - Décrire ma journée 3 fois par semaine',
+            'US03 - Décrire toutes mes journées pendant 1 mois',
+            'US04 - Faire un moodboard sur Pinterest de mes idées',
+            'US05 - Réaménager une pièce en fonction du moodboard',
+            'US06 - Acheter et installer au moins trois éléments de décoration choisis'
+        ], description: 'Sélectionnez votre objectif')
     }
 
     stages {
-        stage('Printing name') {
+        stage('BUILD') {
             steps {
-                script {
-                    def name = "${params.NAME}"
-                    def month = "${params.MONTH}"
-                    def day = "${params.DAY}"
-
-                    echo "Bonjour ${name}, vous avez choisi le ${day} ${month}."
-
-                    def objectives = [
-                        'Janvier': [
-                            'US01': 'Décrire ma journée une fois par semaine',
-                            'US02': 'Décrire ma journée 3 fois par semaine',
-                            'US03': 'Décrire toutes mes journées pendant 1 mois'
-                        ],
-                        'Février': [
-                            'US04': 'Faire un moodboard sur Pinterest de mes idées',
-                            'US05': 'Réaménager une pièce en fonction du moodboard',
-                            'US06': 'Acheter et installer au moins trois éléments de décoration choisis'
-                        ]
-                    ]
-
-                    echo "Objectifs pour ${month} : ${objectives[month]}"
-                }
+                echo "Nom : ${params.NAME}"
+                echo "Mois : ${params.MONTH}"
+                echo "Jour : ${params.DAY}"
             }
         }
 
-        stage('BUILD') {
+        stage('OBJECTIF') {
             steps {
                 script {
-                    echo 'Développement en cours...'
+                    echo "Objectif sélectionné : ${params.OBJECTIVE}"
 
-                    def objectives_conditions = [
-                        'US01': { completed -> 
-                            echo completed ? "Bravo !" : "Courage, tu vas y arriver !" 
-                        },
-                        'US02': { ->
+                    switch (params.OBJECTIVE) {
+                        case 'US01 - Décrire ma journée une fois par semaine':
+                            echo "Tu dois écrire ta journée une fois par semaine."
+                            break
+                        case 'US02 - Décrire ma journée 3 fois par semaine':
                             def freq = input message: "Combien de fois as-tu écrit cette semaine ? (1-3)", parameters: [string(name: 'Fréquence')]
                             echo (freq.toInteger() == 3) ? "Bravo !" : "Courage, continue !"
-                        },
-                        'US03': { ->
+                            break
+                        case 'US03 - Décrire toutes mes journées pendant 1 mois':
                             def days = input message: "Combien de jours as-tu écrit ce mois-ci ? (1-30)", parameters: [string(name: 'Jours')]
                             echo (days.toInteger() == 30) ? "Bravo !" : "Courage, persévère !"
-                        },
-                        'US04': { completed -> 
-                            echo completed ? "Bravo pour ton moodboard !" : "Courage, lance-toi !" 
-                        },
-                        'US05': { completed -> 
-                            echo completed ? "Bravo pour le réaménagement !" : "Courage, passe à l'action !" 
-                        },
-                        'US06': { ->
+                            break
+                        case 'US04 - Faire un moodboard sur Pinterest de mes idées':
+                            echo "Prépare ton moodboard sur Pinterest."
+                            break
+                        case 'US05 - Réaménager une pièce en fonction du moodboard':
+                            echo "Commence le réaménagement de ta pièce."
+                            break
+                        case 'US06 - Acheter et installer au moins trois éléments de décoration choisis':
                             def items = input message: "Combien d'éléments de décoration as-tu achetés et installés ?", parameters: [string(name: 'Nombre')]
                             echo (items.toInteger() >= 3) ? "Bravo pour ta décoration !" : "Courage, continue tes achats !"
-                        }
-                    ]
-
-                    // Exemple d'exécution conditionnelle
-                    objectives_conditions['US02'].call()
+                            break
+                        default:
+                            echo "Aucun objectif sélectionné."
+                    }
                 }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Phase de test en cours...'
+                echo 'Phase de test...'
             }
         }
 
         stage('DEPLOY') {
             steps {
-                echo 'Mise en production en cours...'
+                echo 'Mise en production...'
             }
         }
     }
