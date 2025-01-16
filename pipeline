@@ -11,25 +11,25 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "Compilation de l'application pour ${params.NOM}"
+                echo "Compilation de l application pour ${params.NOM}"
             }
         }
         
         stage('Testing') {
             steps {
-                echo "Exécution des tests pour le mois de ${params.MOIS}"
+                echo "Execution des tests pour le mois de ${params.MOIS}"
             }
         }
         
         stage('Deployment') {
             steps {
-                echo "Déploiement de l'application pour le ${params.DAY} ${params.MOIS}"
+                echo "Deploiement de l application pour le ${params.DAY} ${params.MOIS}"
             }
         }
         
         stage('Post-deployment validation') {
             steps {
-                echo "Validation post-déploiement..."
+                echo "Validation post-deploiement..."
             }
         }
 
